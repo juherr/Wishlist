@@ -2,4 +2,4 @@ parameters:
     ignoreErrors:
         -
             message: '#Undefined variable: \$bdd(_gifts)?#'
-            path: src/*
+            path: public/*

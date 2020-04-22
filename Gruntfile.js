@@ -1,14 +1,14 @@
 module.exports = function(grunt){
-	
+
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		watch: {
 			'default': {
-				files: ['Gruntfile.js', 'sass/*.scss', 'img/svg-dev/*.svg'],
+				files: ['Gruntfile.js', 'public/sass/*.scss', 'public/img/svg-dev/*.svg'],
 				tasks: ['sass:dev', 'autoprefixer']
 			},
 			'svg': {
-				files: ['Gruntfile.js', 'img/svg-dev/*.svg', 'img/svg-dev/sprite/*.svg'],
+				files: ['Gruntfile.js', 'public/img/svg-dev/*.svg', 'public/img/svg-dev/sprite/*.svg'],
 				tasks: ['svgmin', 'svgstore']
 			}
 		},
@@ -19,7 +19,7 @@ module.exports = function(grunt){
 			},
 			dev: {
 				files: {
-					'style.css': 'sass/styles.scss',
+					'style.css': 'public/sass/styles.scss',
 				},
 				options:{
 					style: 'expanded',
@@ -32,7 +32,7 @@ module.exports = function(grunt){
 				map: {
 					annotation: 'style.css.map',
 				}
-				
+
 			},
 			prefix: {
 				src: 'style.css',
@@ -50,9 +50,9 @@ module.exports = function(grunt){
 	        dist: {
 	            files: [{
                     expand: true,
-                    cwd: 'img/svg-dev',
+                    cwd: 'public/img/svg-dev',
                     src: '*.svg',
-                    dest: 'img/svg-prod'
+                    dest: 'public/img/svg-prod'
                 }]
 	        }
 	    },
@@ -66,12 +66,12 @@ module.exports = function(grunt){
 		    },
 		    your_target: {
 		      files:{
-		      	'img/svg-prod/sprite/svgs.svg' : ['img/svg-dev/sprite/*.svg'],
+		      	'public/img/svg-prod/sprite/svgs.svg' : ['public/img/svg-dev/sprite/*.svg'],
 		      },
 		    },
 		},
 	});
-	
+
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-autoprefixer');

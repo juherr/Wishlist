@@ -6,3 +6,11 @@ parameters:
     - "clean-code"
     - "common"
     - "symplify"
+
+  paths:
+    - 'src'
+    - 'public'
+    - 'tests'
+
+  exclude_files:
+    - src/inc/config.php

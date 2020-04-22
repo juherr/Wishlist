@@ -19,7 +19,8 @@
         }
     },
     "scripts": {
-        "ecs": "@php vendor/bin/ecs check src --fix",
-        "phpstan": "@php vendor/bin/phpstan analyse src --level 8"
+        "ecs": "@php vendor/bin/ecs check --fix",
+        "phpstan": "@php vendor/bin/phpstan analyse src public --level 8",
+        "server": "@php -S localhost:8000 -t public"
     }
 }
