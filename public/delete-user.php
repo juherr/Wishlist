@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 use Wishlist\Config;
+use Wishlist\Gifts\GiftRepository;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../src/inc/bdd.php';
-$bdd->query('SET NAMES "utf8"');
 
 $user_id = $_POST['user-id'];
 
@@ -14,9 +14,9 @@ $statement = $bdd->prepare('DELETE FROM ' . Config::getUserTableName() . ' WHERE
 $statement->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $statement->execute();
 
-$statement2 = $bdd->prepare('DELETE FROM ' . Config::getGiftTableName() . ' WHERE la_personne = :user_id');
-$statement2->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-$statement2->execute();
+// TODO remove, should be done by cascading
+$repository = new GiftRepository($bdd);
+$repository->deleteAll($user_id);
 
     //L'ajax
 

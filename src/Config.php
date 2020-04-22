@@ -12,11 +12,11 @@ final class Config
 
     public static function getUserTableName(): string
     {
-        return 'personne';
+        return 'kdo_personne';
     }
 
     public static function getGiftTableName(): string
     {
-        return 'liste';
+        return 'kdo_liste';
     }
 }

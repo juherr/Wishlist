@@ -3,8 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '../src/inc/bdd.php';
-$bdd->query('SET NAMES "utf8"');
+require_once __DIR__ . '/../src/inc/bdd.php';
 
 $id_user = $_POST['id_personne'];
 

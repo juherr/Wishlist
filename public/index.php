@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 use Wishlist\Config;
+use Wishlist\Gifts\GiftRepository;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -61,23 +62,16 @@ session_start();
 				<ul class="gift-list">
 
 					<?php
-                        $gifts = $bdd->query(
-                            'SELECT * FROM ' . Config::getGiftTableName() . ' WHERE la_personne = ' . $id_personne . ' ORDER BY titre ASC'
-                        );
+                        $repository = new GiftRepository($bdd);
+
+                        foreach ($repository->findByUserId((int)$id_personne) as $gift) {
+                            $nom_gift = $gift->getTitle();
+                            $link_gift = $gift->getLink();
+                            $description_gift = $gift->getDescription();
+                            $id_gift = $gift->getId();
+                            $resa_gift = $gift->isBooked();
+
                     ?>
-
-					<?php
-
-                        while ($gift = $gifts->fetch()) :
-                            $nom_gift = $gift['titre'];
-                            $link_gift = $gift['lien'];
-                            $description_gift = $gift['description'];
-                            $id_gift = $gift['id'];
-                            $resa_gift = $gift['reserve'];
-                    ?>
-
-
-
 					<li <?php //Si le cadeau est réservé et qu'on est pas sur notre propre liste, on le marque différemment
                         if ($resa_gift === true && $id_personne !== $_SESSION['user']) {
                             echo 'class="reserve"';
@@ -125,75 +119,52 @@ session_start();
                                 //Si on est pas le propriétaire la liste, on gère la réservation
                                 else :
                                 // On récupère l'état de réservation, la personne qui l'a éventuellement réservé
-                                $resa = $bdd->query(
-                                    'SELECT reserve,IdUser_resa FROM ' . Config::getGiftTableName() . ' WHERE id = ' . $id_gift
-                                );
+                                $resa = $repository->findById($id_gift);
+                                if ($resa !== null) {
 
-                                while ($export_resa = $resa->fetch()) :
-                                $etat_reservation = $export_resa['reserve'];
-                                $user_reservation = $export_resa['IdUser_resa'];
-                            ?>
+                                    $etat_reservation = $resa->isBooked();
+                                    $user_reservation = $resa->getBookedByUserId();
 
-                                <?php
                                     //Si le cadeau n'est pas réservé, j'affiche le bouton "réserver"
-                                    if ($etat_reservation === 0) :
+                                    if (!$etat_reservation) :
                                 ?>
-
 							    <form action="gift-reservation.php" method="post" id="form-resa">
 							        <input type="hidden" value="<?php echo $id_gift; ?>" name="gift-id">
 							        <input type="submit" value="Réserver" class="bt_resa bt">
 							    </form>
-
                                 <?php
                                     // Si le cadeau est réservé
                                     else :
                                         //Si il est réservé par moi, je peux annuler
                                         if ($user_reservation === $_SESSION['user']) :
                                 ?>
-
                                         <form action="delete_reservation.php" method="post" id="cancel_resa">
                                             <input type="hidden" value="<?php echo $id_gift; ?>" name="gift-id">
                                             <input type="submit" value="Annuler" class="bt bt_annuler" title="Tu as indiqué vouloir réserver ce cadeau. Changé d'avis ?">
                                         </form>
-
                                 <?php
                                         //Si il est réservé par qqun d'autre, j'affiche ce qqun d'autre
                                         else :
-                                        $mec_resa = $bdd->query(
-                                            'SELECT nom_personne, choix_illu FROM ' . Config::getGiftTableName() . ' INNER JOIN ' . Config::getUserTableName() . ' ON ' . Config::getGiftTableName() . '.IdUser_resa = ' . Config::getUserTableName() . '.id_personne WHERE id = ' . $id_gift
-                                        );
-                                        $nom_dumec = null;
-                                        $illu = null;
-                                        while ($export_mec = $mec_resa->fetch()) :
-                                        $nom_dumec = $export_mec['nom_personne'];
-                                        $illu = $export_mec['choix_illu'];
+                                            $mec_resa = $bdd->query(
+                                                'SELECT nom_personne, choix_illu FROM ' . Config::getUserTableName() . ' WHERE id_personne = ' . $user_reservation
+                                            );
+                                            $nom_dumec = null;
+                                            $illu = null;
+                                            while ($export_mec = $mec_resa->fetch()) :
+                                                $nom_dumec = $export_mec['nom_personne'];
+                                                $illu = $export_mec['choix_illu'];
+                                            endwhile;
                                 ?>
-
-
-
-                                <?php
-                                        endwhile;
-                                ?>
-
                                        <div class="resaPar" title="<?php echo $nom_dumec; ?> a réservé ce cadeau">
                                             <img src="img/perso<?php echo $illu; ?>.png">
                                             <span><?php echo $nom_dumec; ?></span>
-                                        </div>
-
-
-                                <?php
-                                        endif;
-                                ?>
-
-                                <?php endif; ?>
-
-
+                                       </div>
                             <?php
-                                endwhile;
+                                        endif;
+                                    endif;
+                                }
+                            endif;
                             ?>
-
-							<?php endif; ?>
-
 						</div>
 
 						<?php if ($description_gift) : ?>
@@ -236,11 +207,8 @@ session_start();
 						</form>
 
 						<?php endif; ?>
-
 					</li>
-
-					<?php endwhile; ?>
-
+					<?php } // end gifts ?>
 				</ul>
 
 				<form class="form-gift form-add" action="add-gift.php" method="post" id="add-user">
