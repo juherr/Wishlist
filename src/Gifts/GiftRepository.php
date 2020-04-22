@@ -13,7 +13,7 @@ class GiftRepository
         $this->pdo = $pdo;
     }
 
-    public function add(Gift $gift): int
+    public function create(Gift $gift): int
     {
         $statement = $this->pdo->prepare(<<<SQL
             INSERT INTO kdo_liste (id, la_personne, titre, lien, description, iduser_resa, reserve) 
@@ -37,9 +37,9 @@ class GiftRepository
         SQL);
         $statement->bindValue(':id', $id);
         $statement->execute();
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $item = $statement->fetch(\PDO::FETCH_ASSOC);
 
-        return self::createGift($result);
+        return self::createGift($item);
     }
 
     /**

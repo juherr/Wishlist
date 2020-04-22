@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-use Wishlist\Config;
+use Wishlist\Users\UserRepository;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -35,13 +35,11 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 			<?php
                 require_once __DIR__ . '/../src/inc/bdd.php';
-
-                $users = $bdd->query('SELECT * FROM ' . Config::getUserTableName() . ' ORDER BY nom_personne ASC');
-
-                while ($export_user = $users->fetch()) :
-                    $nom_personne = $export_user['nom_personne'];
-                    $id_personne = $export_user['id_personne'];
-                    $id_illu = $export_user['choix_illu'];
+                $repository = new UserRepository($bdd);
+                foreach ($repository->findAll() as $export_user) {
+                    $nom_personne = $export_user->getUsername();
+                    $id_personne = $export_user->getId();
+                    $id_illu = $export_user->getIconId();
             ?>
 
 			<div class="user" id="user<?php echo $id_personne; ?>">
@@ -133,10 +131,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 			</div>
 
-			<?php endwhile;
-            ?>
-
-
+			<?php } // end user ?>
 
 			<div class="modal-add-user modal-user user" id="modal-add-user">
 				<form action="add-user.php" method="post">

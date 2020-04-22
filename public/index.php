@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
-use Wishlist\Config;
 use Wishlist\Gifts\GiftRepository;
+use Wishlist\Users\UserRepository;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -41,12 +41,11 @@ session_start();
 			<?php
                 require_once __DIR__ . '/../src/inc/bdd.php';
 
-                $users = $bdd->query('SELECT * FROM ' . Config::getUserTableName() . ' ORDER BY nom_personne ASC');
-
-                while ($export_user = $users->fetch()) :
-                    $nom_personne = $export_user['nom_personne'];
-                    $id_personne = $export_user['id_personne'];
-                    $id_illu = $export_user['choix_illu'];
+                $userRepository = new UserRepository($bdd);
+                foreach ($userRepository->findAll() as $export_user) {
+                    $nom_personne = $export_user->getUsername();
+                    $id_personne = $export_user->getId();
+                    $id_illu = $export_user->getIconId();
             ?>
 
 			<div class="user" id="user<?php echo $id_personne; ?>">
@@ -62,9 +61,9 @@ session_start();
 				<ul class="gift-list">
 
 					<?php
-                        $repository = new GiftRepository($bdd);
+                        $giftRepository = new GiftRepository($bdd);
 
-                        foreach ($repository->findByUserId((int)$id_personne) as $gift) {
+                        foreach ($giftRepository->findByUserId((int)$id_personne) as $gift) {
                             $nom_gift = $gift->getTitle();
                             $link_gift = $gift->getLink();
                             $description_gift = $gift->getDescription();
@@ -119,7 +118,7 @@ session_start();
                                 //Si on est pas le propriétaire la liste, on gère la réservation
                                 else :
                                 // On récupère l'état de réservation, la personne qui l'a éventuellement réservé
-                                $resa = $repository->findById($id_gift);
+                                $resa = $giftRepository->findById($id_gift);
                                 if ($resa !== null) {
 
                                     $etat_reservation = $resa->isBooked();
@@ -145,15 +144,15 @@ session_start();
                                 <?php
                                         //Si il est réservé par qqun d'autre, j'affiche ce qqun d'autre
                                         else :
-                                            $mec_resa = $bdd->query(
-                                                'SELECT nom_personne, choix_illu FROM ' . Config::getUserTableName() . ' WHERE id_personne = ' . $user_reservation
-                                            );
-                                            $nom_dumec = null;
-                                            $illu = null;
-                                            while ($export_mec = $mec_resa->fetch()) :
-                                                $nom_dumec = $export_mec['nom_personne'];
-                                                $illu = $export_mec['choix_illu'];
-                                            endwhile;
+                                            $userRepository = new UserRepository($bdd);
+                                            $mec_resa = $userRepository->findById($user_reservation);
+                                            if ($mec_resa === null) {
+                                                $nom_dumec = null;
+                                                $illu = null;
+                                            } else {
+                                                $nom_dumec = $mec_resa->getUsername();
+                                                $illu = $mec_resa->getIconId();
+                                            }
                                 ?>
                                        <div class="resaPar" title="<?php echo $nom_dumec; ?> a réservé ce cadeau">
                                             <img src="img/perso<?php echo $illu; ?>.png">
@@ -240,26 +239,12 @@ session_start();
 				<div class="wrapper-bt wrapper-add">
 					<button class="bt bt-add-gift">Ajouter un cadeau</button>
 				</div>
-
 				<?php endif; ?>
-
-
 			</div>
-
-			<?php endwhile;
-            ?>
-
+			<?php } // end user?>
 		</div>
-
-
-
-		</div>
-
-
+        </div>
 	</div>
-
-
-
 
 	<footer><div class="logout"><a href="logout.php">Se déconnecter</a></div></footer>
 
@@ -272,6 +257,3 @@ session_start();
 
 </body>
 </html>
-
-
-

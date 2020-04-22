@@ -17,7 +17,7 @@ $gift_user = $_POST['gift-user'];
 if (isset($gift_title) && ($gift_title !== '')) {
     $repository = new GiftRepository($bdd);
 
-    $gift_id = $repository->add(new Gift(
+    $gift_id = $repository->create(new Gift(
         (int)$gift_user,
         $gift_title,
         $gift_url,

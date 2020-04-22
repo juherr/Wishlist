@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Wishlist\Config;
+use Wishlist\Users\UserRepository;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../src/inc/bdd.php';
@@ -13,17 +13,16 @@ $username = $_POST['username'];
 $choix_illu = $_POST['choix-illu' . $id_personne];
 
 if (isset($username) && ($username !== '')) {
-    $statement = $bdd->prepare(
-        'UPDATE ' . Config::getUserTableName() . ' SET nom_personne = :nom, choix_illu = :choix_illu WHERE id_personne = :id_personne'
-    );
-
-    $statement->bindParam(':nom', $username, PDO::PARAM_STR);
-    $statement->bindParam(':choix_illu', $choix_illu, PDO::PARAM_INT);
-    $statement->bindParam(':id_personne', $id_personne, PDO::PARAM_INT);
-    $statement->execute();
+    $repository = new UserRepository($bdd);
+    $user = $repository->findById((int)$id_personne);
+    if ($user === null) {
+        return;
+    }
+    $user->setUsername($username);
+    $user->setIconId((int)$choix_illu);
+    $repository->update($user);
 
     //L'ajax
-
     $reponse = 'success';
     echo json_encode([
         'reponse' => $reponse,

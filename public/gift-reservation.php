@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Wishlist\Config;
 use Wishlist\Gifts\GiftRepository;
 
 session_start();
