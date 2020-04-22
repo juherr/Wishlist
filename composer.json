@@ -1,0 +1,16 @@
+{
+    "require": {
+        "php": "7.4.*",
+        "ext-pdo": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Wishlist\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Wishlist\\Tests\\": "tests"
+        }
+    }
+}
