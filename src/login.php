@@ -1,4 +1,6 @@
-<?php include('inc/config.php'); ?>
+<?php declare(strict_types=1);
+
+include('inc/config.php'); ?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -20,28 +22,27 @@
 	<div class="wrapper">
 
 		<header class="logo">
-			<?php echo file_get_contents("img/logo.svg"); ?>
+			<?php echo file_get_contents('img/logo.svg'); ?>
 		</header>
 		
 		<div class="content">
 
 			<div class="grid-sizer"></div>
 
-			<?php 
-				include('inc/bdd.php');
+			<?php
+                include('inc/bdd.php');
 
-				$users = $bdd->query('SELECT * FROM '.$bdd_users.' ORDER BY nom_personne ASC');
+                $users = $bdd->query('SELECT * FROM ' . $bdd_users . ' ORDER BY nom_personne ASC');
 
-				while($export_user = $users->fetch()):
+                while ($export_user = $users->fetch()) :
+                    $nom_personne = $export_user['nom_personne'];
+                    $id_personne = $export_user['id_personne'];
+                    $id_illu = $export_user['choix_illu'];
+            ?>
 
-					$nom_personne = $export_user['nom_personne'];
-					$id_personne = $export_user['id_personne'];
-					$id_illu = $export_user['choix_illu'];
-			?>
-
-			<div class="user" id="user<?php echo $id_personne;?>">
+			<div class="user" id="user<?php echo $id_personne; ?>">
 				<div class="illu">
-					<img src="img/perso<?php echo($id_illu);?>.png">
+					<img src="img/perso<?php echo $id_illu; ?>.png">
 				</div>
 
 				<div class="wrapper-username">
@@ -86,7 +87,7 @@
 									<use xlink:href="#icon-ico-user"></use>
 								</svg>
 							</span>
-							<input class="input-name" type="text" name="username" placeholder="Prénom" required value="<?php echo($nom_personne);?>">
+							<input class="input-name" type="text" name="username" placeholder="Prénom" required value="<?php echo $nom_personne; ?>">
 						</div>
 		
 						<h3>Choisir l'illustration</h3>
@@ -94,16 +95,19 @@
 						<div class="wrapper-illus">
 
 							<div class="wrapper-illustration">
-								<input name="choix-illu<?php echo($id_personne); ?>" type="radio" id="radio1-<?php echo($id_personne); ?>" value="1" class="perso1" <?php if('perso'.$id_illu == 'perso1'){echo 'checked';}?>>
-								<label for="radio1-<?php echo($id_personne); ?>"><img src="img/perso1.png" alt=""></label>
+								<input name="choix-illu<?php echo $id_personne; ?>" type="radio" id="radio1-<?php echo $id_personne; ?>" value="1" class="perso1" <?php if ('perso' . $id_illu === 'perso1') {
+                echo 'checked';
+            }?>>
+								<label for="radio1-<?php echo $id_personne; ?>"><img src="img/perso1.png" alt=""></label>
 								
 							</div>
 
-							<?php for($i=2; $i<=8; $i++): ?>
-							
+							<?php for ($i = 2; $i <= 8; $i++) : ?>
 							<div class="wrapper-illustration">
-								<input value="<?php echo $i; ?>" name="choix-illu<?php echo($id_personne); ?>" type="radio" id="radio<?php echo $i; ?>-<?php echo($id_personne); ?>" class="perso<?php echo $i; ?>" <?php if('perso'.$id_illu == 'perso'.$i){echo 'checked';}?>>
-								<label for="radio<?php echo($i); ?>-<?php echo($id_personne); ?>"><img src="img/perso<?php echo($i); ?>.png" alt=""></label>
+								<input value="<?php echo $i; ?>" name="choix-illu<?php echo $id_personne; ?>" type="radio" id="radio<?php echo $i; ?>-<?php echo $id_personne; ?>" class="perso<?php echo $i; ?>" <?php if ('perso' . $id_illu === 'perso' . $i) {
+                echo 'checked';
+            }?>>
+								<label for="radio<?php echo $i; ?>-<?php echo $id_personne; ?>"><img src="img/perso<?php echo $i; ?>.png" alt=""></label>
 								
 							</div>
 
@@ -125,8 +129,8 @@
         
 			</div>
 
-			<?php endwhile; 
-			?>
+			<?php endwhile;
+            ?>
 
 
 
@@ -158,11 +162,10 @@
 							
 						</div>
 
-						<?php for($i=2; $i<=8; $i++): ?>
-						
+						<?php for ($i = 2; $i <= 8; $i++) : ?>
 						<div class="wrapper-illustration">
 							<input value="<?php echo $i; ?>" name="choix-illu" type="radio" id="radio<?php echo $i; ?>" class="perso<?php echo $i; ?>">
-							<label for="radio<?php echo($i); ?>"><img src="img/perso<?php echo($i); ?>.png" alt=""></label>
+							<label for="radio<?php echo $i; ?>"><img src="img/perso<?php echo $i; ?>.png" alt=""></label>
 							
 						</div>
 

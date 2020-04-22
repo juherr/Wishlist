@@ -1,16 +1,11 @@
 <?php
 
-	try
-	{
-	    $bdd = new PDO('mysql:host=localhost;dbname=kdo', 'root', 'root');
-	}
+declare(strict_types=1);
 
-	catch (Exception $e)
-	
-	{
-	    die(print $e->getMessage());
-	}
+try {
+    $bdd = new PDO('mysql:host=localhost;dbname=kdo', 'root', 'root');
+} catch (Throwable $throwable) {
+    die(print $throwable->getMessage());
+}
 
-	$bdd->query('SET NAMES "utf8"');
-	
-?>
+$bdd->query('SET NAMES "utf8"');

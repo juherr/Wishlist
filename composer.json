@@ -1,7 +1,11 @@
 {
     "require": {
         "php": "7.4.*",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "symplify/easy-coding-standard": "^7.2"
     },
     "autoload": {
         "psr-4": {
@@ -12,5 +16,8 @@
         "psr-4": {
             "Wishlist\\Tests\\": "tests"
         }
+    },
+    "scripts": {
+        "ecs": "@php vendor/bin/ecs check src --fix"
     }
 }
