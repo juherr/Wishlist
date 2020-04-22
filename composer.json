@@ -5,7 +5,8 @@
         "ext-json": "*"
     },
     "require-dev": {
-        "symplify/easy-coding-standard": "^7.2"
+        "symplify/easy-coding-standard": "^7.2",
+        "phpstan/phpstan": "^0.12"
     },
     "autoload": {
         "psr-4": {
@@ -18,6 +19,7 @@
         }
     },
     "scripts": {
-        "ecs": "@php vendor/bin/ecs check src --fix"
+        "ecs": "@php vendor/bin/ecs check src --fix",
+        "phpstan": "@php vendor/bin/phpstan analyse src --level 8"
     }
 }
