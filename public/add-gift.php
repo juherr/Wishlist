@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-include('../src/inc/bdd.php');
-include('../src/inc/config.php');
+include(__DIR__ . '../src/inc/bdd.php');
+include(__DIR__ . '../src/inc/config.php');
 
 $bdd->query('SET NAMES "utf8"');
 
@@ -38,5 +38,5 @@ if (isset($gift_title) && ($gift_title !== '')) {
         'gift_url' => $gift_url,
         'gift_description' => $gift_description,
         'gift_id' => $gift_id,
-    ]);
+    ], JSON_THROW_ON_ERROR);
 }

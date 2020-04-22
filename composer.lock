@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a19838913c65e1a0dcceef8f51c9a3bf",
+    "content-hash": "b47ca665af2c408628900564ea842f22",
     "packages": [],
     "packages-dev": [
         {
@@ -200,6 +200,77 @@
                 "source": "https://github.com/doctrine/annotations/tree/1.10.2"
             },
             "time": "2020-04-20T09:18:32+00:00"
+        },
+        {
+            "name": "doctrine/inflector",
+            "version": "1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/inflector.git",
+                "reference": "ec3a55242203ffa6a4b27c58176da97ff0a7aec1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/inflector/zipball/ec3a55242203ffa6a4b27c58176da97ff0a7aec1",
+                "reference": "ec3a55242203ffa6a4b27c58176da97ff0a7aec1",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Doctrine\\Common\\Inflector\\": "lib/Doctrine/Common/Inflector"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com"
+                },
+                {
+                    "name": "Roman Borschel",
+                    "email": "roman@code-factory.org"
+                },
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de"
+                },
+                {
+                    "name": "Jonathan Wage",
+                    "email": "jonwage@gmail.com"
+                },
+                {
+                    "name": "Johannes Schmitt",
+                    "email": "schmittjoh@gmail.com"
+                }
+            ],
+            "description": "Common String Manipulations with regard to casing and singular/plural rules.",
+            "homepage": "http://www.doctrine-project.org",
+            "keywords": [
+                "inflection",
+                "pluralize",
+                "singularize",
+                "string"
+            ],
+            "support": {
+                "issues": "https://github.com/doctrine/inflector/issues",
+                "source": "https://github.com/doctrine/inflector/tree/1.3.1"
+            },
+            "time": "2019-10-30T19:59:35+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -460,6 +531,53 @@
             ],
             "description": "A wrapper for ocramius/package-versions to get pretty versions strings",
             "time": "2018-06-13T13:22:40+00:00"
+        },
+        {
+            "name": "jetbrains/phpstorm-stubs",
+            "version": "v2019.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JetBrains/phpstorm-stubs.git",
+                "reference": "883b6facd78e01c0743b554af86fa590c2573f40"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/883b6facd78e01c0743b554af86fa590c2573f40",
+                "reference": "883b6facd78e01c0743b554af86fa590c2573f40",
+                "shasum": ""
+            },
+            "require-dev": {
+                "nikic/php-parser": "^4",
+                "php": "^7.1",
+                "phpdocumentor/reflection-docblock": "^4.3",
+                "phpunit/phpunit": "^7"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "PhpStormStubsMap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "PHP runtime & extensions header files for PhpStorm",
+            "homepage": "https://www.jetbrains.com/phpstorm",
+            "keywords": [
+                "autocomplete",
+                "code",
+                "inference",
+                "inspection",
+                "jetbrains",
+                "phpstorm",
+                "stubs",
+                "type"
+            ],
+            "support": {
+                "source": "https://github.com/JetBrains/phpstorm-stubs/tree/master"
+            },
+            "time": "2019-12-05T16:56:26+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -1003,6 +1121,62 @@
             "time": "2020-02-09T14:10:55+00:00"
         },
         {
+            "name": "nikic/php-parser",
+            "version": "v4.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nikic/PHP-Parser.git",
+                "reference": "9a9981c347c5c49d6dfe5cf826bb882b824080dc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/9a9981c347c5c49d6dfe5cf826bb882b824080dc",
+                "reference": "9a9981c347c5c49d6dfe5cf826bb882b824080dc",
+                "shasum": ""
+            },
+            "require": {
+                "ext-tokenizer": "*",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "ircmaxell/php-yacc": "0.0.5",
+                "phpunit/phpunit": "^6.5 || ^7.0 || ^8.0"
+            },
+            "bin": [
+                "bin/php-parse"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhpParser\\": "lib/PhpParser"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Nikita Popov"
+                }
+            ],
+            "description": "A PHP parser written in PHP",
+            "keywords": [
+                "parser",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/nikic/PHP-Parser/issues",
+                "source": "https://github.com/nikic/PHP-Parser/tree/v4.3.0"
+            },
+            "time": "2019-11-08T13:50:10+00:00"
+        },
+        {
             "name": "ocramius/package-versions",
             "version": "1.8.0",
             "source": {
@@ -1066,6 +1240,73 @@
                 }
             ],
             "time": "2020-04-06T17:43:35+00:00"
+        },
+        {
+            "name": "ondram/ci-detector",
+            "version": "3.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/OndraM/ci-detector.git",
+                "reference": "14ccb5401b25f774f99dfdc2c651c2a66b5f253d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/OndraM/ci-detector/zipball/14ccb5401b25f774f99dfdc2c651c2a66b5f253d",
+                "reference": "14ccb5401b25f774f99dfdc2c651c2a66b5f253d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "ergebnis/composer-normalize": "^2.2",
+                "lmc/coding-standard": "^1.3 || ^2.0",
+                "php-coveralls/php-coveralls": "^2.2",
+                "php-parallel-lint/php-parallel-lint": "^1.1",
+                "phpstan/extension-installer": "^1.0.3",
+                "phpstan/phpstan": "^0.12.0",
+                "phpstan/phpstan-phpunit": "^0.12.1",
+                "phpunit/phpunit": "^7.1 || ^8.0 || ^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OndraM\\CiDetector\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ondřej Machulda",
+                    "email": "ondrej.machulda@gmail.com"
+                }
+            ],
+            "description": "Detect current continuous integration server and provide unified access to properties of current build",
+            "keywords": [
+                "CircleCI",
+                "Codeship",
+                "adapter",
+                "appveyor",
+                "bamboo",
+                "buddy",
+                "continuous integration",
+                "continuousphp",
+                "drone",
+                "github",
+                "gitlab",
+                "interface",
+                "jenkins",
+                "teamcity",
+                "travis"
+            ],
+            "support": {
+                "issues": "https://github.com/OndraM/ci-detector/issues",
+                "source": "https://github.com/OndraM/ci-detector/tree/master"
+            },
+            "time": "2020-03-06T17:28:48+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -1481,6 +1722,66 @@
                 "source": "https://github.com/phpstan/phpstan/tree/master"
             },
             "time": "2020-04-19T20:35:10+00:00"
+        },
+        {
+            "name": "phpstan/phpstan-phpunit",
+            "version": "0.12.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan-phpunit.git",
+                "reference": "7232c17e2493dc598173da784477ce0afb2c4e0e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan-phpunit/zipball/7232c17e2493dc598173da784477ce0afb2c4e0e",
+                "reference": "7232c17e2493dc598173da784477ce0afb2c4e0e",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~7.1",
+                "phpstan/phpstan": "^0.12.6"
+            },
+            "conflict": {
+                "phpunit/phpunit": "<7.0"
+            },
+            "require-dev": {
+                "consistence/coding-standard": "^3.5",
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
+                "ergebnis/composer-normalize": "^2.0.2",
+                "jakub-onderka/php-parallel-lint": "^1.0",
+                "phing/phing": "^2.16.0",
+                "phpstan/phpstan-strict-rules": "^0.12",
+                "phpunit/phpunit": "^7.0",
+                "satooshi/php-coveralls": "^1.0",
+                "slevomat/coding-standard": "^4.7.2"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.12-dev"
+                },
+                "phpstan": {
+                    "includes": [
+                        "extension.neon",
+                        "rules.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPStan\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPUnit extensions and rules for PHPStan",
+            "support": {
+                "issues": "https://github.com/phpstan/phpstan-phpunit/issues",
+                "source": "https://github.com/phpstan/phpstan-phpunit/tree/0.12.8"
+            },
+            "time": "2020-04-17T08:04:10+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2099,6 +2400,179 @@
             ],
             "description": "Common interfaces for simple caching",
             "time": "2017-10-23T01:57:42+00:00"
+        },
+        {
+            "name": "rector/rector",
+            "version": "v0.7.16",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rectorphp/rector.git",
+                "reference": "5c766753bb22f223e9381416c62163591a1f4c14"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/5c766753bb22f223e9381416c62163591a1f4c14",
+                "reference": "5c766753bb22f223e9381416c62163591a1f4c14",
+                "shasum": ""
+            },
+            "require": {
+                "composer/xdebug-handler": "^1.4",
+                "doctrine/annotations": "^1.8",
+                "doctrine/inflector": "^1.3",
+                "ext-json": "*",
+                "jean85/pretty-package-versions": "^1.2",
+                "jetbrains/phpstorm-stubs": "^2019.3",
+                "nette/robot-loader": "^3.2",
+                "nette/utils": "^3.1",
+                "nikic/php-parser": "4.3.*",
+                "ondram/ci-detector": "^3.1",
+                "php": "^7.2.4",
+                "phpstan/phpdoc-parser": "^0.4",
+                "phpstan/phpstan": "^0.12.11",
+                "phpstan/phpstan-phpunit": "^0.12",
+                "sebastian/diff": "^3.0|^4.0",
+                "symfony/console": "^4.4.6|^5.0.6",
+                "symfony/dependency-injection": "^4.4.6|^5.0.6",
+                "symfony/finder": "^4.4.6|^5.0.6",
+                "symfony/process": "^4.4.6|^5.0.6",
+                "symplify/auto-bind-parameter": "^7.2.4",
+                "symplify/autowire-array-parameter": "^7.2.4",
+                "symplify/package-builder": "^7.2.4",
+                "symplify/set-config-resolver": "^7.2.4",
+                "tracy/tracy": "^2.7"
+            },
+            "replace": {
+                "rector/rector-prefixed": "self.version"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "ocramius/package-versions": "^1.4|^1.5",
+                "phpunit/phpunit": "^8.4|^9.0",
+                "symplify/changelog-linker": "^7.2.4",
+                "symplify/easy-coding-standard": "^7.2.4",
+                "symplify/monorepo-builder": "^7.2.4",
+                "symplify/phpstan-extensions": "^7.2.4",
+                "thecodingmachine/phpstan-strict-rules": "^0.12"
+            },
+            "bin": [
+                "bin/rector"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Rector\\Architecture\\": "rules/architecture/src",
+                    "Rector\\PostRector\\": "packages/post-rector/src",
+                    "Rector\\AttributeAwarePhpDoc\\": "packages/attribute-aware-php-doc/src",
+                    "Rector\\Autodiscovery\\": "rules/autodiscovery/src",
+                    "Rector\\BetterPhpDocParser\\": "packages/better-php-doc-parser/src",
+                    "Rector\\CakePHPToSymfony\\": "rules/cakephp-to-symfony/src",
+                    "Rector\\CakePHP\\": "rules/cakephp/src",
+                    "Rector\\Celebrity\\": "rules/celebrity/src",
+                    "Rector\\ChangesReporting\\": "packages/changes-reporting/src",
+                    "Rector\\CodeQuality\\": "rules/code-quality/src",
+                    "Rector\\CodingStyle\\": "rules/coding-style/src",
+                    "Rector\\ConsoleDiffer\\": "packages/console-differ/src",
+                    "Rector\\Core\\": "src",
+                    "Rector\\DeadCode\\": "rules/dead-code/src",
+                    "Rector\\DoctrineCodeQuality\\": "rules/doctrine-code-quality/src",
+                    "Rector\\DoctrineGedmoToKnplabs\\": "rules/doctrine-gedmo-to-knplabs/src",
+                    "Rector\\Doctrine\\": "rules/doctrine/src",
+                    "Rector\\DynamicTypeAnalysis\\": "packages/dynamic-type-analysis/src",
+                    "Rector\\DoctrineAnnotationGenerated\\": "packages/doctrine-annotation-generated/src",
+                    "Rector\\ElasticSearchDSL\\": "rules/elastic-search-dsl/src",
+                    "Rector\\FileSystemRector\\": "packages/file-system-rector/src",
+                    "Rector\\FrameworkMigration\\": "rules/framework-migration/src",
+                    "Rector\\Guzzle\\": "rules/guzzle/src",
+                    "Rector\\JMS\\": "rules/jms/src",
+                    "Rector\\Laravel\\": "rules/laravel/src",
+                    "Rector\\Legacy\\": "rules/legacy/src",
+                    "Rector\\MinimalScope\\": "rules/minimal-scope/src",
+                    "Rector\\MysqlToMysqli\\": "rules/mysql-to-mysqli/src",
+                    "Rector\\NetteTesterToPHPUnit\\": "rules/nette-tester-to-phpunit/src",
+                    "Rector\\NetteToSymfony\\": "rules/nette-to-symfony/src",
+                    "Rector\\Nette\\": "rules/nette/src",
+                    "Rector\\NodeCollector\\": "packages/node-collector/src",
+                    "Rector\\NodeNameResolver\\": "packages/node-name-resolver/src",
+                    "Rector\\NodeTypeResolver\\": "packages/node-type-resolver/src",
+                    "Rector\\Oxid\\": "rules/oxid/src",
+                    "Rector\\PHPStanStaticTypeMapper\\": "packages/phpstan-static-type-mapper/src",
+                    "Rector\\PHPStan\\": "rules/phpstan/src",
+                    "Rector\\PHPUnitSymfony\\": "rules/phpunit-symfony/src",
+                    "Rector\\PHPUnit\\": "rules/phpunit/src",
+                    "Rector\\PSR4\\": "rules/psr4/src",
+                    "Rector\\Phalcon\\": "rules/phalcon/src",
+                    "Rector\\Php52\\": "rules/php52/src",
+                    "Rector\\Php53\\": "rules/php53/src",
+                    "Rector\\Php54\\": "rules/php54/src",
+                    "Rector\\Php55\\": "rules/php55/src",
+                    "Rector\\Php56\\": "rules/php56/src",
+                    "Rector\\Php70\\": "rules/php70/src",
+                    "Rector\\Php71\\": "rules/php71/src",
+                    "Rector\\Php72\\": "rules/php72/src",
+                    "Rector\\Php73\\": "rules/php73/src",
+                    "Rector\\Php74\\": "rules/php74/src",
+                    "Rector\\Php80\\": "rules/php80/src",
+                    "Rector\\PHPOffice\\": "rules/php-office/src",
+                    "Rector\\PhpDeglobalize\\": "rules/php-deglobalize/src",
+                    "Rector\\PhpSpecToPHPUnit\\": "rules/php-spec-to-phpunit/src",
+                    "Rector\\Polyfill\\": "packages/polyfill/src",
+                    "Rector\\Privatization\\": "rules/privatization/src",
+                    "Rector\\RectorGenerator\\": "packages/rector-generator/src",
+                    "Rector\\Refactoring\\": "packages/refactoring/src",
+                    "Rector\\RemovingStatic\\": "rules/removing-static/src",
+                    "Rector\\Renaming\\": "rules/renaming/src",
+                    "Rector\\Restoration\\": "rules/restoration/src",
+                    "Rector\\SOLID\\": "rules/solid/src",
+                    "Rector\\NodeNestingScope\\": "packages/node-nesting-scope/src",
+                    "Rector\\Sensio\\": "rules/sensio/src",
+                    "Rector\\Shopware\\": "rules/shopware/src",
+                    "Rector\\Silverstripe\\": "rules/silverstripe/src",
+                    "Rector\\StaticTypeMapper\\": "packages/static-type-mapper/src",
+                    "Rector\\StrictCodeQuality\\": "rules/strict-code-quality/src",
+                    "Rector\\Sylius\\": "rules/sylius/src",
+                    "Rector\\SymfonyCodeQuality\\": "rules/symfony-code-quality/src",
+                    "Rector\\SymfonyPHPUnit\\": "rules/symfony-phpunit/src",
+                    "Rector\\Symfony\\": "rules/symfony/src",
+                    "Rector\\Twig\\": "rules/twig/src",
+                    "Rector\\TypeDeclaration\\": "rules/type-declaration/src",
+                    "Rector\\VendorLocker\\": "packages/vendor-locker/src",
+                    "Rector\\ZendToSymfony\\": "rules/zend-to-symfony/src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tomas Votruba",
+                    "email": "tomas.vot@gmail.com",
+                    "homepage": "https://tomasvotruba.com"
+                },
+                {
+                    "name": "Jan Mikes",
+                    "email": "j.mikes@me.com",
+                    "homepage": "https://janmikes.cz"
+                }
+            ],
+            "description": "Instant upgrade and refactoring of your PHP code",
+            "homepage": "https://getrector.org",
+            "keywords": [
+                "ast",
+                "automated refactoring",
+                "instant refactoring",
+                "instant upgrades"
+            ],
+            "support": {
+                "issues": "https://github.com/rectorphp/rector/issues",
+                "source": "https://github.com/rectorphp/rector/tree/master"
+            },
+            "time": "2020-04-16T08:20:42+00:00"
         },
         {
             "name": "sebastian/code-unit",
@@ -5043,6 +5517,83 @@
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
             "time": "2019-06-13T22:48:21+00:00"
+        },
+        {
+            "name": "tracy/tracy",
+            "version": "v2.7.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/tracy.git",
+                "reference": "60f2e554c0253d2b7cf096298650d8293e9f8318"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/tracy/zipball/60f2e554c0253d2b7cf096298650d8293e9f8318",
+                "reference": "60f2e554c0253d2b7cf096298650d8293e9f8318",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-session": "*",
+                "php": ">=7.1"
+            },
+            "conflict": {
+                "nette/di": "<3.0"
+            },
+            "require-dev": {
+                "latte/latte": "^2.5",
+                "nette/di": "^3.0",
+                "nette/mail": "^3.0",
+                "nette/tester": "^2.2",
+                "nette/utils": "^3.0",
+                "phpstan/phpstan": "^0.12",
+                "psr/log": "^1.0"
+            },
+            "suggest": {
+                "https://nette.org/donate": "Please support Tracy via a donation"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.7-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src"
+                ],
+                "files": [
+                    "src/Tracy/shortcuts.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "😎 Tracy: the addictive tool to ease debugging PHP code for cool developers. Friendly design, logging, profiler, advanced features like debugging AJAX calls or CLI support. You will love it.",
+            "homepage": "https://tracy.nette.org",
+            "keywords": [
+                "Xdebug",
+                "debug",
+                "debugger",
+                "nette",
+                "profiler"
+            ],
+            "support": {
+                "issues": "https://github.com/nette/tracy/issues",
+                "source": "https://github.com/nette/tracy/tree/v2.7.4"
+            },
+            "time": "2020-04-11T17:26:33+00:00"
         },
         {
             "name": "webmozart/assert",

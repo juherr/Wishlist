@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-include('../src/inc/config.php'); ?>
+include(__DIR__ . '../src/inc/config.php'); ?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -30,7 +30,7 @@ include('../src/inc/config.php'); ?>
 			<div class="grid-sizer"></div>
 
 			<?php
-                include('../src/inc/bdd.php');
+                include(__DIR__ . '../src/inc/bdd.php');
 
                 $users = $bdd->query('SELECT * FROM ' . $bdd_users . ' ORDER BY nom_personne ASC');
 

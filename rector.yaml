@@ -1,0 +1,17 @@
+parameters:
+  sets:
+    - 'code-quality'
+    - 'coding-style'
+    - 'php71'
+    - 'php72'
+    - 'php73'
+    - 'php74'
+    - 'phpstan'
+
+  path:
+    - 'public'
+    - 'src'
+    - 'tests'
+
+  exclude_paths:
+    - 'public/index.php'

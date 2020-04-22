@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 session_start();
 
-include('../src/inc/bdd.php');
-include('../src/inc/config.php');
+include(__DIR__ . '../src/inc/bdd.php');
+include(__DIR__ . '../src/inc/config.php');
 
 $bdd->query('SET NAMES "utf8"');
 
@@ -31,5 +31,5 @@ if (isset($id_gift) && ($id_gift !== '')) {
     echo json_encode([
         'reponse' => $reponse,
         'gift_id' => $id_gift,
-    ]);
+    ], JSON_THROW_ON_ERROR);
 }

@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-include('../src/inc/bdd.php');
-include('../src/inc/config.php');
+include(__DIR__ . '../src/inc/bdd.php');
+include(__DIR__ . '../src/inc/config.php');
 
 $bdd->query('SET NAMES "utf8"');
 
@@ -23,4 +23,4 @@ $statement2->execute();
     $reponse = 'success';
     echo json_encode([
         'reponse' => $reponse,
-    ]);
+    ], JSON_THROW_ON_ERROR);

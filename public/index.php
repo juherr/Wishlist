@@ -4,7 +4,7 @@ session_start();
     if (! isset($_SESSION['user']) && empty($_SESSION['user'])) {
         header('Location: login.php');
     }
-    include('../src/inc/config.php');
+    include(__DIR__ . '../src/inc/config.php');
 ?>
 <!doctype html>
 <html lang="en">
@@ -35,7 +35,7 @@ session_start();
 			<div class="grid-sizer"></div>
 
 			<?php
-                include('../src/inc/bdd.php');
+                include(__DIR__ . '../src/inc/bdd.php');
 
                 $users = $bdd->query('SELECT * FROM ' . $bdd_users . ' ORDER BY nom_personne ASC');
 
