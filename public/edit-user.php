@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-include(__DIR__ . '../src/inc/bdd.php');
-include(__DIR__ . '../src/inc/config.php');
+use Wishlist\Config;
 
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../src/inc/bdd.php';
 $bdd->query('SET NAMES "utf8"');
 
 $id_personne = $_POST['id_personne'];
@@ -13,7 +14,7 @@ $choix_illu = $_POST['choix-illu' . $id_personne];
 
 if (isset($username) && ($username !== '')) {
     $statement = $bdd->prepare(
-        'UPDATE ' . $bdd_users . ' SET nom_personne = :nom, choix_illu = :choix_illu WHERE id_personne = :id_personne'
+        'UPDATE ' . Config::getUserTableName() . ' SET nom_personne = :nom, choix_illu = :choix_illu WHERE id_personne = :id_personne'
     );
 
     $statement->bindParam(':nom', $username, PDO::PARAM_STR);

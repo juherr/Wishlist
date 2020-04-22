@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-include(__DIR__ . '../src/inc/bdd.php');
-include(__DIR__ . '../src/inc/config.php');
+use Wishlist\Config;
 
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../src/inc/bdd.php';
 $bdd->query('SET NAMES "utf8"');
-
 
 $gift_title = $_POST['gift-name'];
 $gift_url = $_POST['gift-url'];
@@ -16,7 +16,7 @@ $gift_id = $_POST['gift-id'];
 
 if (isset($gift_title) && ($gift_title !== '')) {
     $statement = $bdd->prepare(
-        'UPDATE ' . $bdd_gifts . ' SET titre = :title, lien = :lien, description = :description WHERE id = :id'
+        'UPDATE ' . Config::getGiftTableName() . ' SET titre = :title, lien = :lien, description = :description WHERE id = :id'
     );
 
     $statement->bindParam(':title', $gift_title, PDO::PARAM_STR);

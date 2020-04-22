@@ -1,10 +1,13 @@
 <?php declare(strict_types=1);
 
+use Wishlist\Config;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
 session_start();
     if (! isset($_SESSION['user']) && empty($_SESSION['user'])) {
         header('Location: login.php');
     }
-    include(__DIR__ . '../src/inc/config.php');
 ?>
 <!doctype html>
 <html lang="en">
@@ -35,9 +38,9 @@ session_start();
 			<div class="grid-sizer"></div>
 
 			<?php
-                include(__DIR__ . '../src/inc/bdd.php');
+                require_once __DIR__ . '/../src/inc/bdd.php';
 
-                $users = $bdd->query('SELECT * FROM ' . $bdd_users . ' ORDER BY nom_personne ASC');
+                $users = $bdd->query('SELECT * FROM ' . Config::getUserTableName() . ' ORDER BY nom_personne ASC');
 
                 while ($export_user = $users->fetch()) :
                     $nom_personne = $export_user['nom_personne'];
@@ -59,7 +62,7 @@ session_start();
 
 					<?php
                         $gifts = $bdd->query(
-                            'SELECT * FROM ' . $bdd_gifts . ' WHERE la_personne = ' . $id_personne . ' ORDER BY titre ASC'
+                            'SELECT * FROM ' . Config::getGiftTableName() . ' WHERE la_personne = ' . $id_personne . ' ORDER BY titre ASC'
                         );
                     ?>
 
@@ -123,7 +126,7 @@ session_start();
                                 else :
                                 // On récupère l'état de réservation, la personne qui l'a éventuellement réservé
                                 $resa = $bdd->query(
-                                    'SELECT reserve,IdUser_resa FROM ' . $bdd_gifts . ' WHERE id = ' . $id_gift
+                                    'SELECT reserve,IdUser_resa FROM ' . Config::getGiftTableName() . ' WHERE id = ' . $id_gift
                                 );
 
                                 while ($export_resa = $resa->fetch()) :
@@ -157,7 +160,7 @@ session_start();
                                         //Si il est réservé par qqun d'autre, j'affiche ce qqun d'autre
                                         else :
                                         $mec_resa = $bdd->query(
-                                            'SELECT nom_personne, choix_illu FROM ' . $bdd_gifts . ' INNER JOIN ' . $bdd_users . ' ON ' . $bdd_gifts . '.IdUser_resa = ' . $bdd_users . '.id_personne WHERE id = ' . $id_gift
+                                            'SELECT nom_personne, choix_illu FROM ' . Config::getGiftTableName() . ' INNER JOIN ' . Config::getUserTableName() . ' ON ' . Config::getGiftTableName() . '.IdUser_resa = ' . Config::getUserTableName() . '.id_personne WHERE id = ' . $id_gift
                                         );
                                         $nom_dumec = null;
                                         $illu = null;

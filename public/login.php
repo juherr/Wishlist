@@ -1,6 +1,10 @@
 <?php declare(strict_types=1);
 
-include(__DIR__ . '../src/inc/config.php'); ?>
+use Wishlist\Config;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -30,9 +34,9 @@ include(__DIR__ . '../src/inc/config.php'); ?>
 			<div class="grid-sizer"></div>
 
 			<?php
-                include(__DIR__ . '../src/inc/bdd.php');
+                require_once __DIR__ . '/../src/inc/bdd.php';
 
-                $users = $bdd->query('SELECT * FROM ' . $bdd_users . ' ORDER BY nom_personne ASC');
+                $users = $bdd->query('SELECT * FROM ' . Config::getUserTableName() . ' ORDER BY nom_personne ASC');
 
                 while ($export_user = $users->fetch()) :
                     $nom_personne = $export_user['nom_personne'];
