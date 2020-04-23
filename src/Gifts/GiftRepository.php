@@ -96,7 +96,7 @@ class GiftRepository
         SQL);
 
         $statement->bindValue(':title', $gift->getTitle());
-        $statement->bindValue(':lien', $gift->getLink());
+        $statement->bindValue(':lien', $gift->getLink() ?? '');
         $statement->bindValue(':description', $gift->getDescription());
         $statement->bindValue(':etat', $gift->isBooked() ? 1 : 0);
         $statement->bindValue(':userResa', $gift->getBookedByUserId() === null ? 0 : $gift->getBookedByUserId());
