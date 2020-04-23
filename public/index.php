@@ -1,38 +1,27 @@
-<?php declare(strict_types=1);
+<?php
 
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
-use Wishlist\Gifts\GiftRepository;
-use Wishlist\Users\UserRepository;
+use App\Kernel;
+use Symfony\Component\ErrorHandler\Debug;
+use Symfony\Component\HttpFoundation\Request;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require dirname(__DIR__).'/config/bootstrap.php';
 
-session_start();
-if (empty($_SESSION['user'])) {
-    header('Location: login.php');
+if ($_SERVER['APP_DEBUG']) {
+    umask(0000);
+
+    Debug::enable();
 }
 
-require_once __DIR__ . '/../src/inc/bdd.php';
-$userRepository = new UserRepository($bdd);
-$giftRepository = new GiftRepository($bdd);
-
-$users = $userRepository->findAll();
-$gifts = [];
-foreach ($users as $user) {
-    $gifts[$user->getId()] = $giftRepository->findByUserId($user->getId());
-    $users[$user->getId()] = $user;
+if ($trustedProxies = $_SERVER['TRUSTED_PROXIES'] ?? $_ENV['TRUSTED_PROXIES'] ?? false) {
+    Request::setTrustedProxies(explode(',', $trustedProxies), Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
 }
 
-$loader = new FilesystemLoader(__DIR__ . '/../templates');
-$twig = new Environment($loader, [
-    //'cache' => '/path/to/compilation_cache',
-    'debug' => true,
-]);
-$twig->addExtension(new \Twig\Extension\DebugExtension());
-$template = $twig->load('index.html.twig');
+if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false) {
+    Request::setTrustedHosts([$trustedHosts]);
+}
 
-echo $template->render([
-    'users' => $users,
-    'gifts' => $gifts,
-    'loggedUserId' => $_SESSION['user'],
-]);
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+$request = Request::createFromGlobals();
+$response = $kernel->handle($request);
+$response->send();
+$kernel->terminate($request, $response);

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wishlist\Gifts;
+namespace App\Gifts;
 
 class Gift
 {

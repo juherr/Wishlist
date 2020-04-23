@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Wishlist\Users;
+namespace App\Users;
 
-use Wishlist\Gifts\GiftRepository;
+use App\Gifts\GiftRepository;
 
 class UserService
 {

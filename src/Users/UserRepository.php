@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wishlist\Users;
+namespace App\Users;
 
 class UserRepository
 {

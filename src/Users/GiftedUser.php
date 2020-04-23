@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Wishlist\Users;
+namespace App\Users;
 
-use Wishlist\Gifts\Gift;
+use App\Gifts\Gift;
 
 class GiftedUser extends User
 {

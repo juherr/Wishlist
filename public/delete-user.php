@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Wishlist\Gifts\GiftRepository;
-use Wishlist\Users\UserRepository;
+use App\Gifts\GiftRepository;
+use App\Users\UserRepository;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../src/inc/bdd.php';

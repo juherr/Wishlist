@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Wishlist\Gifts\GiftRepository;
+use App\Gifts\GiftRepository;
 
 session_start();
 
