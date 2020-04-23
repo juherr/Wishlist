@@ -11,7 +11,7 @@ $gift_title = $_POST['gift-name'];
 if (isset($gift_title) && ($gift_title !== '')) {
     $gift_id = $_POST['gift-id'];
     $repository = new GiftRepository($bdd);
-    $gift = $repository->findById($gift_id);
+    $gift = $repository->findById((int)$gift_id);
     if ($gift === null) {
         return;
     }

@@ -18,7 +18,7 @@ if (isset($username) && ($username !== '')) {
     if ($user === null) {
         return;
     }
-    $user->setUsername($username);
+    $user->setName($username);
     $user->setIconId((int)$choix_illu);
     $repository->update($user);
 

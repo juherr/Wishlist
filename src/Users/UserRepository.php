@@ -19,7 +19,7 @@ class UserRepository
             INSERT INTO kdo_personne (id_personne, nom_personne, choix_illu) 
             VALUES (NULL, :username, :icon_id)
         SQL);
-        $statement->bindValue(':username', $user->getUsername());
+        $statement->bindValue(':username', $user->getName());
         $statement->bindValue(':icon_id', $user->getIconId());
 
         $statement->execute();
@@ -80,7 +80,7 @@ class UserRepository
             WHERE id_personne = :id
         SQL);
 
-        $statement->bindValue(':username', $user->getUsername());
+        $statement->bindValue(':username', $user->getName());
         $statement->bindValue(':icon_id', $user->getIconId());
         $statement->bindValue(':id', $user->getId());
         $statement->execute();

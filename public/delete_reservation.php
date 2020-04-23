@@ -13,7 +13,7 @@ $id_gift = $_POST['gift-id'];
 if (isset($id_gift) && ($id_gift !== '')) {
 
     $repository = new GiftRepository($bdd);
-    $gift = $repository->findById($id_gift);
+    $gift = $repository->findById((int)$id_gift);
     if ($gift === null) {
         return;
     }

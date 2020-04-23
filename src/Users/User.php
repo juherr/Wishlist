@@ -7,16 +7,16 @@ namespace Wishlist\Users;
 class User
 {
     private ?int $id;
-    private string $username;
+    private string $name;
     private int $iconId;
 
-    public function __construct(string $username, int $iconId, ?int $id = null)
+    public function __construct(string $name, int $iconId, ?int $id = null)
     {
         if ($id !== null && $id <= 0) {
             throw new \InvalidArgumentException('Invalid id: ' . $id);
         }
         $this->id = $id;
-        $this->username = $username;
+        $this->name = $name;
         $this->iconId = $iconId;
     }
 
@@ -25,14 +25,14 @@ class User
         return $this->id;
     }
 
-    public function getUsername(): string
+    public function getName(): string
     {
-        return $this->username;
+        return $this->name;
     }
 
-    public function setUsername(string $username): void
+    public function setName(string $name): void
     {
-        $this->username = $username;
+        $this->name = $name;
     }
 
     public function getIconId(): int
