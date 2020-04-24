@@ -3,10 +3,10 @@
     "type": "project",
     "require": {
         "php": "7.4.*",
-        "ext-pdo": "*",
-        "ext-json": "*",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
+        "ext-pdo": "*",
         "sensio/framework-extra-bundle": "^5.5",
         "symfony/asset": "5.0.*",
         "symfony/console": "5.0.*",

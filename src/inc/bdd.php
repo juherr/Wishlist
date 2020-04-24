@@ -10,3 +10,5 @@ try {
 }
 
 $bdd->query('SET NAMES "utf8"');
+
+return $bdd;

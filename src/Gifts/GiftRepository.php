@@ -75,7 +75,7 @@ class GiftRepository
         return new Gift(
             (int)$item['la_personne'],
             $item['titre'],
-            $item['link'],
+            $item['lien'],
             $item['description'],
             (bool)$item['reserve'],
             $idUserResa,

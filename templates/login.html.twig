@@ -85,7 +85,7 @@
                                 <div class="wrapper-illustration">
                                     <input value="{{ i }}" name="choix-illu{{ user.id }}" type="radio"
                                            id="radio{{ i }}-{{ user.id }}"
-                                           class="perso{{ i }}" {{ id_illu == i ? 'checked' }}
+                                           class="perso{{ i }}" {{ user.iconId == i ? 'checked' }}
                                     >
                                     <label for="radio{{ i }}-{{ user.id }}">
                                         <img src="img/perso{{ i }}.png" alt="">
