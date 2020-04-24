@@ -18,17 +18,12 @@ class DefaultController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index(Request $request): Response
+    public function index(Request $request, UserRepository $userRepository, GiftRepository $giftRepository): Response
     {
         $userId = $request->getSession()->get('user');
         if (empty($userId)) {
             return $this->redirectToRoute('login');
         }
-
-        /** @var UserRepository $userRepository */
-        $userRepository = $this->getDoctrine()->getRepository(User::class);
-        /** @var GiftRepository $giftRepository */
-        $giftRepository = $this->getDoctrine()->getRepository(Gift::class);
 
         $users = $userRepository->findAll();
         $gifts = [];
@@ -46,10 +41,8 @@ class DefaultController extends AbstractController
     /**
      * @Route("/login.php", name="login")
      */
-    public function login(): Response
+    public function login(UserRepository $userRepository): Response
     {
-        /** @var UserRepository $userRepository */
-        $userRepository = $this->getDoctrine()->getRepository(User::class);
         $users = $userRepository->findAll();
 
         return $this->render('login.html.twig', [

@@ -20,7 +20,7 @@ class UserController extends AbstractController
     /**
      * @Route("/add-user.php")
      */
-    public function add(Request $request): Response
+    public function add(Request $request, UserRepository $repository): Response
     {
         $username = $request->request->get('username');
         $iconId = $request->request->getInt('choix-illu');
@@ -28,8 +28,6 @@ class UserController extends AbstractController
             return Response::create('Invalid username', 400);
         }
 
-        /** @var UserRepository $repository */
-        $repository = $this->getDoctrine()->getRepository(User::class);
         $user = new User($username, $iconId);
         $repository->create($user);
         return $this->redirectToRoute('login');
@@ -38,7 +36,7 @@ class UserController extends AbstractController
     /**
      * @Route("/edit-user.php")
      */
-    public function update(Request $request): JsonResponse
+    public function update(Request $request, UserRepository $repository): JsonResponse
     {
         $userId = $request->request->getInt('id_personne');
         $username = $request->request->get('username');
@@ -51,8 +49,6 @@ class UserController extends AbstractController
             ], 400);
         }
 
-        /** @var UserRepository $repository */
-        $repository = $this->getDoctrine()->getRepository(User::class);
         $user = $repository->findById((int)$userId);
         if ($user === null) {
             return $this->json([
@@ -74,16 +70,10 @@ class UserController extends AbstractController
     /**
      * @Route("/delete-user.php")
      */
-    public function delete(Request $request): JsonResponse
+    public function delete(Request $request, UserService $service): JsonResponse
     {
         $userId = $request->request->getInt('user-id');
 
-        /** @var UserRepository $repository */
-        $repository = $this->getDoctrine()->getRepository(User::class);
-        /** @var GiftRepository $giftRepository */
-        $giftRepository = $this->getDoctrine()->getRepository(Gift::class);
-        // TODO use IOC instead
-        $service = new UserService($repository, $giftRepository);
         $service->delete($userId);
 
         return $this->json([

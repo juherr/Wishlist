@@ -10,53 +10,52 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class GiftController extends AbstractController
 {
     /**
      * @Route("/add-gift.php")
      */
-    public function add(Request $request): JsonResponse
+    public function add(Request $request, ValidatorInterface $validator, GiftRepository $repository): JsonResponse
     {
         $title = $request->request->get('gift-name');
         $url = $request->request->get('gift-url');
         $description = $request->request->get('gift-description');
         $userId = $request->request->getInt('gift-user');
-
-        if (!isset($title) || $title === '') {
-            return $this->json([
-                'reponse' => 'failed',
-                'message' => 'empty title',
-            ], 400);
-        }
-
-        /** @var GiftRepository $giftRepository */
-        $repository = $this->getDoctrine()->getRepository(Gift::class);
-        $gift_id = $repository->create(new Gift(
+        $gift = new Gift(
             $userId,
             $title,
             $url,
             $description,
             false
-        ));
+        );
+
+        $errors = $validator->validate($gift);
+        if (count($errors) > 0) {
+            return $this->json([
+                'reponse' => 'failed',
+                'message' => (string) $errors,
+            ], 400);
+        }
+
+        $giftId = $repository->create($gift);
         return $this->json([
             'reponse' => 'success',
             'gift_title' => $title,
             'gift_url' => $url,
             'gift_description' => $description,
-            'gift_id' => $gift_id,
+            'gift_id' => $giftId,
         ]);
     }
 
     /**
      * @Route("/delete-gift.php")
      */
-    public function delete(Request $request): JsonResponse
+    public function delete(Request $request, GiftRepository $repository): JsonResponse
     {
         $giftId = $request->request->getInt('gift-id');
 
-        /** @var GiftRepository $giftRepository */
-        $repository = $this->getDoctrine()->getRepository(Gift::class);
         $repository->delete($giftId);
 
         return $this->json([
@@ -67,7 +66,7 @@ class GiftController extends AbstractController
     /**
      * @Route("/delete_reservation.php")
      */
-    public function cancelBooking(Request $request): JsonResponse
+    public function cancelBooking(Request $request, GiftRepository $repository): JsonResponse
     {
         $giftId = $request->request->getInt('gift-id');
         if ($giftId <= 0) {
@@ -77,8 +76,6 @@ class GiftController extends AbstractController
             ], 400);
         }
 
-        /** @var GiftRepository $giftRepository */
-        $repository = $this->getDoctrine()->getRepository(Gift::class);
         $gift = $repository->findById($giftId);
         if ($gift === null) {
             return $this->json([
@@ -97,7 +94,7 @@ class GiftController extends AbstractController
     /**
      * @Route("/gift-reservation.php")
      */
-    public function book(Request $request): JsonResponse
+    public function book(Request $request, GiftRepository $repository): JsonResponse
     {
         $giftId = $request->request->getInt('gift-id');
         if ($giftId <= 0) {
@@ -107,8 +104,6 @@ class GiftController extends AbstractController
             ], 400);
         }
 
-        /** @var GiftRepository $giftRepository */
-        $repository = $this->getDoctrine()->getRepository(Gift::class);
         $gift = $repository->findById((int)$giftId);
         if ($gift === null) {
             return $this->json([
@@ -130,12 +125,32 @@ class GiftController extends AbstractController
     /**
      * @Route("/update-gift.php")
      */
-    public function update(Request $request): JsonResponse
+    public function update(Request $request, GiftRepository $repository, ValidatorInterface $validator): JsonResponse
     {
-        $giftTitle = $request->request->get('gift-name');
         $giftId = $request->request->getInt('gift-id');
+
+        $gift = $repository->findById($giftId);
+        if ($gift === null) {
+            return $this->json([
+                'reponse' => 'failed',
+                'message' => 'Gift not found'
+            ], 404);
+        }
+
+        $giftTitle = $request->request->get('gift-name');
+        $gift->setTitle($giftTitle);
         $giftUrl = $request->request->get('gift-url');
+        $gift->setLink($giftUrl);
         $giftDescription = $request->request->get('gift-description');
+        $gift->setDescription($giftDescription);
+
+        $errors = $validator->validate($gift);
+        if (count($errors) > 0) {
+            return $this->json([
+                'reponse' => 'failed',
+                'message' => (string) $errors,
+            ], 400);
+        }
 
         if (empty($giftTitle)) {
             return $this->json([
@@ -144,19 +159,6 @@ class GiftController extends AbstractController
             ], 400);
         }
 
-        /** @var GiftRepository $giftRepository */
-        $repository = $this->getDoctrine()->getRepository(Gift::class);
-        $gift = $repository->findById((int)$giftId);
-        if ($gift === null) {
-            return $this->json([
-                'reponse' => 'failed',
-                'message' => 'Gift not found'
-            ], 404);
-        }
-
-        $gift->setTitle($giftTitle);
-        $gift->setLink($giftUrl);
-        $gift->setDescription($giftDescription);
         $repository->update($gift);
 
         return $this->json([
