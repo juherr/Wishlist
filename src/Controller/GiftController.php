@@ -66,52 +66,6 @@ class GiftController extends BaseController
     }
 
     /**
-     * @Route("/delete_reservation.php")
-     */
-    public function cancelBooking(Request $request): JsonResponse
-    {
-        $giftId = $request->request->getInt('gift-id');
-        if ($giftId <= 0) {
-            return $this->failed('Invalid gift-id', 400);
-        }
-
-        $gift = $this->repository->findById($giftId);
-        if ($gift === null) {
-            return $this->failed('Gift not found', 404);
-        }
-        $gift->cancelBooking();
-        $this->repository->update($gift);
-        return $this->success([
-            'gift_id' => $giftId,
-        ]);
-    }
-
-    /**
-     * @Route("/gift-reservation.php")
-     */
-    public function book(Request $request): JsonResponse
-    {
-        $giftId = $request->request->getInt('gift-id');
-        if ($giftId <= 0) {
-            return $this->failed('Invalid gift-id', 400);
-        }
-
-        $gift = $this->repository->findById((int)$giftId);
-        if ($gift === null) {
-            return $this->failed( 'gift not found', 404);
-        }
-
-        // TODO manage connected user
-        $currentUserId = $request->getSession()->get('user');
-        $gift->book($currentUserId);
-        $this->repository->update($gift);
-
-        return $this->success([
-            'gift_id' => $giftId,
-        ]);
-    }
-
-    /**
      * @Route("/update-gift.php")
      */
     public function update(Request $request): JsonResponse
