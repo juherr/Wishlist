@@ -1,9 +1,9 @@
 (function ($, root, undefined) {
-	
+
 	$(function () {
-		
+
 		'use strict';
-		
+
 		// Neige
 snowStorm.flakesMaxActive = 80000;
 snowStorm.animationInterval = 25;
@@ -91,12 +91,12 @@ $('.modal-add-user .input-name').keyup(function(){
 
 $('.modal-add-user .wrapper-illus').change(function(){
 	var illu_name = $(this).find('input[type="radio"]:checked').attr('class');
-	$(this).parent().parent().find('.illu').html('<img src="img/'+illu_name+'.png"/>');
+	$(this).parent().parent().find('.illu').html('<img src="/img/'+illu_name+'.png"/>');
 });
 
 // Afficher le modal au click sur 'ajouter un perso'
 
-$('body').on('click', '.add-user button', function(){    
+$('body').on('click', '.add-user button', function(){
 	$('.modal-user').fadeIn(function(){
 		$grid.masonry();
 	})
@@ -148,7 +148,7 @@ $('.edit-user .input-name').keyup(function(){
 
 $('.edit-user .wrapper-illus').change(function(){
 	var illu_name = $(this).find('input[type="radio"]:checked').attr('class');
-	$(this).parent().parent().parent().find('.illu').html('<img src="img/'+illu_name+'.png"/>');
+	$(this).parent().parent().parent().find('.illu').html('<img src="/img/'+illu_name+'.png"/>');
 });
 
 // Delete user
@@ -177,7 +177,7 @@ $('body').on('submit', '.form-add', function(e){
     } else {
         // Envoi de la requête HTTP en mode asynchrone
         $.ajax({
-            url: $this.attr('action'), 
+            url: $this.attr('action'),
             type: $this.attr('method'),
             data: $this.serialize(),
             dataType: 'json', // JSON
@@ -199,11 +199,11 @@ $('body').on('submit', '.form-add', function(e){
                         gift_description_code = '<p class="gift-description">'+gift_description+'</p>'
                     }
 
-                    $this.parent().find('ul').append('<li><div class="wrapper-title"><p class="gift-title">'+gift_title+'</p>'+gift_url_code+'<span class="submit-delete ico-trash"><svg viewBox="0 0 100 100" class="icon"><use xlink:href="#icon-ico-trash"></use></svg></span><div class="confirmation-suppression"><p>Êtes-vous sûr ?</p><form action="delete-gift.php" method="post"><input type="hidden" value="'+gift_id+'" name="gift-id"><input type="submit" class="confirm-suppression bt" value="Oui" /></form><p class="annuler-suppression">Non, annuler</p></div><span class="ico-edit" title="Éditer le cadeau"><svg viewBox="0 0 100 100" class="icon"><use xlink:href="#icon-ico-edit"></use></svg></span></div>'+gift_description_code+'<form class="form-gift form-edit" action="update-gift.php" method="post"><div class="wrapper-gift-input"><span><svg viewBox="0 0 100 100" class="icon"><use xlink:href="#icon-ico-item"></use></svg></span><input type="text" name="gift-name" required placeholder="Désignation" value="'+gift_title+'"></div><div class="wrapper-gift-input"><span><svg viewBox="0 0 100 100" class="icon"><use xlink:href="#icon-link"></use></svg></span><input type="text" name="gift-url" placeholder="Lien optionnel" value="'+gift_url+'"></div><textarea name="gift-description" id="" rows="3" placeholder="Détail optionnel">'+gift_description+'</textarea><input type="hidden" value="'+gift_id+'" name="gift-id"><input type="submit" class="bt bt-edit-gift" value="Modifier le cadeau"><div class="wrapper-bt-edit-gift"><span class="cancel-edit-gift bt-cancel">Annuler</span></div></form></li>').children(':last').hide().fadeIn(1000);               
+                    $this.parent().find('ul').append('<li><div class="wrapper-title"><p class="gift-title">'+gift_title+'</p>'+gift_url_code+'<span class="submit-delete ico-trash"><svg viewBox="0 0 100 100" class="icon"><use xlink:href="#icon-ico-trash"></use></svg></span><div class="confirmation-suppression"><p>Êtes-vous sûr ?</p><form action="' + route_gift_delete + '" method="post"><input type="hidden" value="'+gift_id+'" name="gift-id"><input type="submit" class="confirm-suppression bt" value="Oui" /></form><p class="annuler-suppression">Non, annuler</p></div><span class="ico-edit" title="Éditer le cadeau"><svg viewBox="0 0 100 100" class="icon"><use xlink:href="#icon-ico-edit"></use></svg></span></div>'+gift_description_code+'<form class="form-gift form-edit" action="' + route_gift_update + '" method="post"><div class="wrapper-gift-input"><span><svg viewBox="0 0 100 100" class="icon"><use xlink:href="#icon-ico-item"></use></svg></span><input type="text" name="gift-name" required placeholder="Désignation" value="'+gift_title+'"></div><div class="wrapper-gift-input"><span><svg viewBox="0 0 100 100" class="icon"><use xlink:href="#icon-link"></use></svg></span><input type="text" name="gift-url" placeholder="Lien optionnel" value="'+gift_url+'"></div><textarea name="gift-description" id="" rows="3" placeholder="Détail optionnel">'+gift_description+'</textarea><input type="hidden" value="'+gift_id+'" name="gift-id"><input type="submit" class="bt bt-edit-gift" value="Modifier le cadeau"><div class="wrapper-bt-edit-gift"><span class="cancel-edit-gift bt-cancel">Annuler</span></div></form></li>').children(':last').hide().fadeIn(1000);
                 }
 
                 $this.find("input[type=text], textarea").val("");
-                
+
             }
         });
     }
@@ -228,7 +228,7 @@ $('body').on('submit', '.form-edit', function(e){
     } else {
         // Envoi de la requête HTTP en mode asynchrone
         $.ajax({
-            url: $this.attr('action'), 
+            url: $this.attr('action'),
             type: $this.attr('method'),
             data: $this.serialize(),
             dataType: 'json', // JSON
@@ -239,7 +239,7 @@ $('body').on('submit', '.form-edit', function(e){
                 	gift_description = json.gift_description;
 
                 	//ce qui se passe si succès
-                	
+
                 	$this.parent().find('.gift-title').html(gift_title);
 
                     // Gérer le lien
@@ -256,7 +256,7 @@ $('body').on('submit', '.form-edit', function(e){
                     if(gift_description != ''){
                         $this.parent().find('.wrapper-title').after('<p class="gift-description">'+gift_description+'</p>');
                     }
-                	
+
                 	$this.slideUp(function(){
                 		$grid.masonry();
                 	});
@@ -285,7 +285,7 @@ $('body').on('submit', '.edit-user form', function(e){
     } else {
         // Envoi de la requête HTTP en mode asynchrone
         $.ajax({
-            url: $this.attr('action'), 
+            url: $this.attr('action'),
             type: $this.attr('method'),
             data: $this.serialize(),
             dataType: 'json', // JSON
@@ -314,7 +314,7 @@ $('body').on('submit', '.confirmation-suppression form', function(e){
     var $this = $(this);
 
     $.ajax({
-        url: $this.attr('action'), 
+        url: $this.attr('action'),
         type: $this.attr('method'),
         data: $this.serialize(),
         dataType: 'json', // JSON
@@ -332,7 +332,7 @@ $('body').on('submit', '.confirmation-suppression form', function(e){
         }
     });
 });
-        
+
 //Reserver un cadeau AJAX
 $('body').on('submit', '#form-resa', function(e){
     e.preventDefault();
@@ -340,7 +340,7 @@ $('body').on('submit', '#form-resa', function(e){
     var $this = $(this);
 
     $.ajax({
-        url: $this.attr('action'), 
+        url: $this.attr('action'),
         type: $this.attr('method'),
         data: $this.serialize(),
         dataType: 'json', // JSON
@@ -349,8 +349,8 @@ $('body').on('submit', '#form-resa', function(e){
                 var gift_id = json.gift_id;
 
                 //ce qui se passe si succès
-                $this.parent().parent().addClass('reserve');               
-                $this.parent().append('<form action="delete_reservation.php" id="cancel_resa" method="post"><input type="hidden" value="'+gift_id+'" name="gift-id"><input type="submit" value="Annuler" class="bt bt_annuler" title="Tu as indiqué vouloir réserver ce cadeau. Changé d\'avis ?"></form>');
+                $this.parent().parent().addClass('reserve');
+                $this.parent().append('<form action="' + route_booking_delete + '" id="cancel_resa" method="post"><input type="hidden" value="'+gift_id+'" name="gift-id"><input type="submit" value="Annuler" class="bt bt_annuler" title="Tu as indiqué vouloir réserver ce cadeau. Changé d\'avis ?"></form>');
                  $this.remove();
 
 
@@ -359,9 +359,9 @@ $('body').on('submit', '#form-resa', function(e){
             }
         }
     });
-});  
-        
-        
+});
+
+
 //Annuler une résa AJAX
 $('body').on('submit', '#cancel_resa', function(e){
     e.preventDefault();
@@ -369,7 +369,7 @@ $('body').on('submit', '#cancel_resa', function(e){
     var $this = $(this);
 
     $.ajax({
-        url: $this.attr('action'), 
+        url: $this.attr('action'),
         type: $this.attr('method'),
         data: $this.serialize(),
         dataType: 'json', // JSON
@@ -378,8 +378,8 @@ $('body').on('submit', '#cancel_resa', function(e){
                 var gift_id = json.gift_id;
 
                 //ce qui se passe si succès
-                $this.parent().parent().removeClass('reserve');               
-                $this.parent().append('<form action="gift-reservation.php" method="post" id="form-resa"><input type="hidden" value="'+gift_id+'" name="gift-id"><input type="submit" value="Réserver" class="bt_resa bt"></form>');
+                $this.parent().parent().removeClass('reserve');
+                $this.parent().append('<form action="' + route_booking_create + '" method="post" id="form-resa"><input type="hidden" value="'+gift_id+'" name="gift-id"><input type="submit" value="Réserver" class="bt_resa bt"></form>');
                  $this.remove();
 
 
@@ -388,9 +388,9 @@ $('body').on('submit', '#cancel_resa', function(e){
             }
         }
     });
-}); 
-        
+});
+
 
 });
-	
+
 })(jQuery, this);

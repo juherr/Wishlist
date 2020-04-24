@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Wishlist de Noël</title>
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="{{ asset('style.css') }}">
         <link href='https://fonts.googleapis.com/css?family=Lato:400,900,700' rel='stylesheet' type='text/css'>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
@@ -26,7 +26,7 @@
                 {% for user in users %}
                 <div class="user" id="user{{ user.id }}">
                     <div class="illu">
-                        <img src="img/perso{{ user.iconId }}.png">
+                        <img src='{{ asset("img/perso#{user.iconId}.png") }}'>
                     </div>
 
                     <div class="wrapper-username">
@@ -60,7 +60,7 @@
 
                                 <div class="confirmation-suppression">
                                     <p>Êtes-vous sûr ?</p>
-                                    <form action="delete-gift.php" method="post">
+                                    <form action="{{ path('gift_delete') }}" method="post">
                                         <input type="hidden" value="{{ gift.id }}" name="gift-id">
                                         <input type="submit" class="confirm-suppression bt" value="Oui" />
                                     </form>
@@ -78,7 +78,7 @@
                                     {# On récupère l'état de réservation, la personne qui l'a éventuellement réservé #}
                                     {# Si le cadeau n'est pas réservé, j'affiche le bouton "réserver" #}
                                     {% if not gift.booked %}
-                                    <form action="gift-reservation.php" method="post" id="form-resa">
+                                    <form action="{{ path('booking_create') }}" method="post" id="form-resa">
                                         <input type="hidden" value="{{ gift.id }}" name="gift-id">
                                         <input type="submit" value="Réserver" class="bt_resa bt">
                                     </form>
@@ -86,14 +86,14 @@
                                     {% else %}
                                         {# Si il est réservé par moi, je peux annuler #}
                                         {% if gift.bookedByUserId == loggedUserId %}
-                                        <form action="delete_reservation.php" method="post" id="cancel_resa">
+                                        <form action="{{ path('booking_delete') }}" method="post" id="cancel_resa">
                                             <input type="hidden" value="{{ gift.id }}" name="gift-id">
                                             <input type="submit" value="Annuler" class="bt bt_annuler" title="Tu as indiqué vouloir réserver ce cadeau. Changé d'avis ?">
                                         </form>
                                         {# Si il est réservé par qqun d'autre, j'affiche ce qqun d'autre #}
                                         {% else %}
                                         <div class="resaPar" title="{{ attribute(users, gift.bookedByUserId).name }} a réservé ce cadeau">
-                                            <img src="img/perso{{ attribute(users, gift.bookedByUserId).iconId }}.png">
+                                            <img src='{{ asset("img/perso#{attribute(users, gift.bookedByUserId).iconId}.png") }}'>
                                             <span>{{ attribute(users, gift.bookedByUserId).name }}</span>
                                         </div>
                                         {% endif %}
@@ -108,7 +108,7 @@
                             {# Chaque personne identifié peut modifier sa propre liste #}
                             {% if gift.userId == loggedUserId %}
                             {# Le formulaire, pour edition #}
-                            <form class="form-gift form-edit" action="update-gift.php" method="post">
+                            <form class="form-gift form-edit" action="{{ path('gift_update') }}" method="post">
                                 <div class="wrapper-gift-input">
                                     <span>
                                         <svg viewBox="0 0 100 100" class="icon">
@@ -142,7 +142,7 @@
                         {% endfor %}
                     </ul>
 
-                    <form class="form-gift form-add" action="add-gift.php" method="post" id="add-user">
+                    <form class="form-gift form-add" action="{{ path('gift_add') }}" method="post" id="add-user">
                         <div class="wrapper-gift-input">
                                 <span>
                                     <svg viewBox="0 0 100 100" class="icon">
@@ -177,12 +177,18 @@
             </div>
         </div>
 
-        <footer><div class="logout"><a href="logout.php">Se déconnecter</a></div></footer>
+        <footer><div class="logout"><a href="{{ path('logout') }}">Se déconnecter</a></div></footer>
 
-        <script src="js/snowstorm-min.js"></script>
+        <script src="{{ asset('js/snowstorm-min.js') }}"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-        <script src="js/masonry.pkgd.min.js"></script>
-        <script src="js/jquery.scrollTo.min.js"></script>
-        <script src="js/scripts.js"></script>
+        <script src="{{ asset('js/masonry.pkgd.min.js') }}"></script>
+        <script src="{{ asset('js/jquery.scrollTo.min.js') }}"></script>
+        <script src="{{ asset('js/scripts.js') }}"></script>
+        <script>
+            const route_booking_delete = "{{ path('booking_delete')|escape('js') }}";
+            const route_booking_create = "{{ path('booking_create')|escape('js') }}";
+            const route_gift_delete = "{{ path('gift_delete')|escape('js') }}";
+            const route_gift_update = "{{ path('gift_update')|escape('js') }}";
+        </script>
     </body>
 </html>

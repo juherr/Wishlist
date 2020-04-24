@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Repository\GiftRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,61 +13,30 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController
 {
     private UserRepository $userRepository;
-    private GiftRepository $giftRepository;
 
-    public function __construct(UserRepository $userRepository, GiftRepository $giftRepository)
+    public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
-        $this->giftRepository = $giftRepository;
     }
 
     /**
      * @Route("/", name="index")
      */
-    public function index(Request $request): Response
+    public function index(): Response
     {
-        $userId = $request->getSession()->get('user');
-        if (empty($userId)) {
-            return $this->redirectToRoute('login');
-        }
-
-        // TODO service
-        $users = $this->userRepository->findAll();
-        $gifts = [];
-        foreach ($users as $user) {
-            $gifts[$user->getId()] = $this->giftRepository->findByUserId($user->getId());
-            $users[$user->getId()] = $user;
-        }
-        return $this->render('index.html.twig', [
-            'users' => $users,
-            'gifts' => $gifts,
-            'loggedUserId' => $userId,
-        ]);
+        return $this->redirectToRoute('user_list');
     }
 
     /**
-     * @Route("/login.php", name="login")
+     * @Route("/user-connection.php", name="login")
      */
-    public function login(): Response
-    {
-        $users = $this->userRepository->findAll();
-
-        return $this->render('login.html.twig', [
-            'users' => $users,
-        ]);
-    }
-
-    /**
-     * @Route("/user-connection.php")
-     */
-    public function connect(Request $request): Response
+    public function login(Request $request): Response
     {
         $userId = $request->request->getInt('id_personne');
-        if ($userId <= 0) {
-            return $this->redirectToRoute('login');
+        if ($userId > 0) {
+            $request->getSession()->set('user', $userId);
         }
-        $request->getSession()->set('user', $userId);
-        return $this->redirectToRoute('index');
+        return $this->redirectToRoute('user_list');
     }
 
     /**
@@ -77,6 +45,6 @@ class DefaultController extends AbstractController
     public function logout(Request $request): Response
     {
         $request->getSession()->clear();
-        return $this->redirectToRoute('login');
+        return $this->redirectToRoute('user_list');
     }
 }

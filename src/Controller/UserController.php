@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\GiftRepository;
 use App\Service\UserService;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,18 +17,25 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UserController extends BaseController
 {
     private UserRepository $repository;
+    private GiftRepository $giftRepository;
     private UserService $service;
     private ValidatorInterface $validator;
 
-    public function __construct(UserRepository $repository, UserService $service, ValidatorInterface $validator)
+    public function __construct(
+        UserRepository $repository,
+        GiftRepository $giftRepository,
+        UserService $service,
+        ValidatorInterface $validator
+    )
     {
         $this->repository = $repository;
+        $this->giftRepository = $giftRepository;
         $this->service = $service;
         $this->validator = $validator;
     }
 
     /**
-     * @Route("/add-user.php")
+     * @Route("/add-user.php", name="user_add")
      */
     public function add(Request $request): Response
     {
@@ -48,7 +56,7 @@ class UserController extends BaseController
     }
 
     /**
-     * @Route("/edit-user.php")
+     * @Route("/edit-user.php", name="user_update")
      */
     public function update(Request $request): JsonResponse
     {
@@ -79,7 +87,7 @@ class UserController extends BaseController
     }
 
     /**
-     * @Route("/delete-user.php")
+     * @Route("/delete-user.php", name="user_delete")
      */
     public function delete(Request $request): JsonResponse
     {
@@ -88,5 +96,32 @@ class UserController extends BaseController
         $this->service->delete($userId);
 
         return $this->success();
+    }
+
+    /**
+     * @Route("/users/", name="user_list")
+     */
+    public function list(Request $request): Response
+    {
+        $users = $this->repository->findAll();
+
+        $userId = $request->getSession()->get('user');
+        if (empty($userId)) {
+            return $this->render('login.html.twig', [
+                'users' => $users,
+            ]);
+        }
+
+        // TODO service
+        $gifts = [];
+        foreach ($users as $user) {
+            $gifts[$user->getId()] = $this->giftRepository->findByUserId($user->getId());
+            $users[$user->getId()] = $user;
+        }
+        return $this->render('index.html.twig', [
+            'users' => $users,
+            'gifts' => $gifts,
+            'loggedUserId' => $userId,
+        ]);
     }
 }

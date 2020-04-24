@@ -23,7 +23,7 @@ class GiftController extends BaseController
     }
 
     /**
-     * @Route("/add-gift.php")
+     * @Route("/add-gift.php", name="gift_add")
      */
     public function add(Request $request): JsonResponse
     {
@@ -54,7 +54,7 @@ class GiftController extends BaseController
     }
 
     /**
-     * @Route("/delete-gift.php")
+     * @Route("/delete-gift.php", name="gift_delete")
      */
     public function delete(Request $request): JsonResponse
     {
@@ -66,7 +66,7 @@ class GiftController extends BaseController
     }
 
     /**
-     * @Route("/update-gift.php")
+     * @Route("/update-gift.php", name="gift_update")
      */
     public function update(Request $request): JsonResponse
     {

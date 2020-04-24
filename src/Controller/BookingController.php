@@ -18,9 +18,9 @@ class BookingController extends BaseController
         $this->repository = $repository;
     }
     /**
-     * @Route("/delete_reservation.php")
+     * @Route("/delete_reservation.php", name="booking_delete")
      */
-    public function cancelBooking(Request $request): JsonResponse
+    public function delete(Request $request): JsonResponse
     {
         $giftId = $request->request->getInt('gift-id');
         if ($giftId <= 0) {
@@ -42,9 +42,9 @@ class BookingController extends BaseController
     }
 
     /**
-     * @Route("/gift-reservation.php")
+     * @Route("/gift-reservation.php", name="booking_create")
      */
-    public function createBooking(Request $request): JsonResponse
+    public function create(Request $request): JsonResponse
     {
         $giftId = $request->request->getInt('gift-id');
         if ($giftId <= 0) {

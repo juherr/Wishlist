@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Wishlist de Noël</title>
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="{{ asset('style.css') }}">
         <link href='https://fonts.googleapis.com/css?family=Lato:400,900,700' rel='stylesheet' type='text/css'>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -26,7 +26,7 @@
                 {% for user in users %}
                 <div class="user" id="user{{ user.id }}">
                     <div class="illu">
-                        <img src="img/perso{{ user.iconId }}.png">
+                        <img src='{{ asset("img/perso#{user.iconId}.png") }}'>
                     </div>
 
                     <div class="wrapper-username">
@@ -42,14 +42,14 @@
                             </svg>
                         </span>
 
-                        <form class="wrapper-bt wrapper-add" action="user-connection.php" method="post">
+                        <form class="wrapper-bt wrapper-add" action="{{ path('login') }}" method="post">
                             <input type="hidden" value="{{ user.id }}" name="id_personne">
                             <input type="submit" value="Je suis {{ user.name }} !" class="bt">
                         </form>
 
                         <div class="confirmation-suppression">
                             <p>Êtes-vous sûr ?</p>
-                            <form action="delete-user.php" method="post">
+                            <form action="{{ path('user_delete') }}" method="post">
                                 <input type="hidden" value="{{ user.id }}" name="user-id">
                                 <input type="submit" class="confirm-suppression bt" value="Oui"/>
                             </form>
@@ -58,7 +58,7 @@
                     </div>
 
                     <div class="edit-user">
-                        <form action="edit-user.php" method="post">
+                        <form action="{{ path('user_update') }}" method="post">
                             <input type="hidden" value="{{ user.id }}" name="id_personne">
 
                             <div class="wrapper-gift-input">
@@ -78,7 +78,7 @@
                                            id="radio1-{{ user.id }}" value="1" class="perso1"
                                             {{ user.iconId == 1 ? 'checked' }}
                                     >
-                                    <label for="radio1-{{ user.id }}"><img src="img/perso1.png" alt=""></label>
+                                    <label for="radio1-{{ user.id }}"><img src="{{ asset('img/perso1.png') }}" alt=""></label>
                                 </div>
 
                                 {% for i in range(2, 8) %}
@@ -88,7 +88,7 @@
                                            class="perso{{ i }}" {{ user.iconId == i ? 'checked' }}
                                     >
                                     <label for="radio{{ i }}-{{ user.id }}">
-                                        <img src="img/perso{{ i }}.png" alt="">
+                                        <img src='{{ asset("img/perso#{i}.png") }}' alt="">
                                     </label>
                                 </div>
                                 {% endfor %}
@@ -107,10 +107,10 @@
                 {% endfor %}
 
                 <div class="modal-add-user modal-user user" id="modal-add-user">
-                    <form action="add-user.php" method="post">
+                    <form action="{{ path('user_add') }}" method="post">
 
                         <div class="illu">
-                            <img src="img/perso1.png" alt="">
+                            <img src="{{ asset('img/perso1.png') }}" alt="">
                         </div>
 
                         <h2>Ajouter une personne</h2>
@@ -128,7 +128,7 @@
                         <div class="wrapper-illus">
                             <div class="wrapper-illustration">
                                 <input name="choix-illu" type="radio" id="radio1" checked value="1" class="perso1">
-                                <label for="radio1"><img src="img/perso1.png" alt=""></label>
+                                <label for="radio1"><img src="{{ asset('img/perso1.png') }}" alt=""></label>
 
                             </div>
 
@@ -136,7 +136,7 @@
                             <div class="wrapper-illustration">
                                 <input value="{{ i }}" name="choix-illu" type="radio" id="radio{{ i }}"
                                        class="perso{{ i }}">
-                                <label for="radio{{ i }}"><img src="img/perso{{ i }}.png" alt=""></label>
+                                <label for="radio{{ i }}"><img src='{{ asset("img/perso#{i}.png") }}' alt=""></label>
                             </div>
                             {% endfor %}
                         </div>
@@ -157,10 +157,13 @@
             </div>
         </div>
 
-        <script src="js/snowstorm-min.js"></script>
+        <script src="{{ asset('js/snowstorm-min.js') }}"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-        <script src="js/masonry.pkgd.min.js"></script>
-        <script src="js/jquery.scrollTo.min.js"></script>
-        <script src="js/scripts.js"></script>
+        <script src="{{ asset('js/masonry.pkgd.min.js') }}"></script>
+        <script src="{{ asset('js/jquery.scrollTo.min.js') }}"></script>
+        <script src="{{ asset('js/scripts.js') }}"></script>
+        <script>
+            const route_booking_delete = "{{ path('booking_delete')|escape('js') }}";
+        </script>
     </body>
 </html>
