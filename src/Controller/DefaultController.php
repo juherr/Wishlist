@@ -13,20 +13,30 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
 {
+    private UserRepository $userRepository;
+    private GiftRepository $giftRepository;
+
+    public function __construct(UserRepository $userRepository, GiftRepository $giftRepository)
+    {
+        $this->userRepository = $userRepository;
+        $this->giftRepository = $giftRepository;
+    }
+
     /**
      * @Route("/", name="index")
      */
-    public function index(Request $request, UserRepository $userRepository, GiftRepository $giftRepository): Response
+    public function index(Request $request): Response
     {
         $userId = $request->getSession()->get('user');
         if (empty($userId)) {
             return $this->redirectToRoute('login');
         }
 
-        $users = $userRepository->findAll();
+        // TODO service
+        $users = $this->userRepository->findAll();
         $gifts = [];
         foreach ($users as $user) {
-            $gifts[$user->getId()] = $giftRepository->findByUserId($user->getId());
+            $gifts[$user->getId()] = $this->giftRepository->findByUserId($user->getId());
             $users[$user->getId()] = $user;
         }
         return $this->render('index.html.twig', [
@@ -39,9 +49,9 @@ class DefaultController extends AbstractController
     /**
      * @Route("/login.php", name="login")
      */
-    public function login(UserRepository $userRepository): Response
+    public function login(): Response
     {
-        $users = $userRepository->findAll();
+        $users = $this->userRepository->findAll();
 
         return $this->render('login.html.twig', [
             'users' => $users,

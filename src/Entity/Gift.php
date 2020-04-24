@@ -7,7 +7,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\GiftRepository")
+ * @ORM\Entity
  * @ORM\Table(name="kdo_liste")
  */
 class Gift

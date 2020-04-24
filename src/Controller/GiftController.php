@@ -13,10 +13,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class GiftController extends BaseController
 {
+    private GiftRepository $repository;
+    private ValidatorInterface $validator;
+
+    public function __construct(GiftRepository $repository, ValidatorInterface $validator)
+    {
+        $this->repository = $repository;
+        $this->validator = $validator;
+    }
+
     /**
      * @Route("/add-gift.php")
      */
-    public function add(Request $request, ValidatorInterface $validator, GiftRepository $repository): JsonResponse
+    public function add(Request $request): JsonResponse
     {
         $title = $request->request->get('gift-name');
         $url = $request->request->get('gift-url');
@@ -30,12 +39,12 @@ class GiftController extends BaseController
             false
         );
 
-        $errors = $validator->validate($gift);
+        $errors = $this->validator->validate($gift);
         if (count($errors) > 0) {
             return $this->failed((string) $errors, 400);
         }
 
-        $giftId = $repository->create($gift);
+        $giftId = $this->repository->create($gift);
         return $this->success([
             'gift_title' => $title,
             'gift_url' => $url,
@@ -47,11 +56,11 @@ class GiftController extends BaseController
     /**
      * @Route("/delete-gift.php")
      */
-    public function delete(Request $request, GiftRepository $repository): JsonResponse
+    public function delete(Request $request): JsonResponse
     {
         $giftId = $request->request->getInt('gift-id');
 
-        $repository->delete($giftId);
+        $this->repository->delete($giftId);
 
         return $this->success();
     }
@@ -59,19 +68,19 @@ class GiftController extends BaseController
     /**
      * @Route("/delete_reservation.php")
      */
-    public function cancelBooking(Request $request, GiftRepository $repository): JsonResponse
+    public function cancelBooking(Request $request): JsonResponse
     {
         $giftId = $request->request->getInt('gift-id');
         if ($giftId <= 0) {
             return $this->failed('Invalid gift-id', 400);
         }
 
-        $gift = $repository->findById($giftId);
+        $gift = $this->repository->findById($giftId);
         if ($gift === null) {
             return $this->failed('Gift not found', 404);
         }
         $gift->cancelBooking();
-        $repository->update($gift);
+        $this->repository->update($gift);
         return $this->success([
             'gift_id' => $giftId,
         ]);
@@ -80,21 +89,22 @@ class GiftController extends BaseController
     /**
      * @Route("/gift-reservation.php")
      */
-    public function book(Request $request, GiftRepository $repository): JsonResponse
+    public function book(Request $request): JsonResponse
     {
         $giftId = $request->request->getInt('gift-id');
         if ($giftId <= 0) {
             return $this->failed('Invalid gift-id', 400);
         }
 
-        $gift = $repository->findById((int)$giftId);
+        $gift = $this->repository->findById((int)$giftId);
         if ($gift === null) {
             return $this->failed( 'gift not found', 404);
         }
 
+        // TODO manage connected user
         $currentUserId = $request->getSession()->get('user');
         $gift->book($currentUserId);
-        $repository->update($gift);
+        $this->repository->update($gift);
 
         return $this->success([
             'gift_id' => $giftId,
@@ -104,11 +114,11 @@ class GiftController extends BaseController
     /**
      * @Route("/update-gift.php")
      */
-    public function update(Request $request, GiftRepository $repository, ValidatorInterface $validator): JsonResponse
+    public function update(Request $request): JsonResponse
     {
         $giftId = $request->request->getInt('gift-id');
 
-        $gift = $repository->findById($giftId);
+        $gift = $this->repository->findById($giftId);
         if ($gift === null) {
             return $this->failed('Gift not found', 404);
         }
@@ -120,7 +130,7 @@ class GiftController extends BaseController
         $giftDescription = $request->request->get('gift-description');
         $gift->setDescription($giftDescription);
 
-        $errors = $validator->validate($gift);
+        $errors = $this->validator->validate($gift);
         if (count($errors) > 0) {
             return $this->failed((string) $errors, 400);
         }
@@ -129,7 +139,7 @@ class GiftController extends BaseController
             return $this->failed('Invalid gift-name', 400);
         }
 
-        $repository->update($gift);
+        $this->repository->update($gift);
 
         return $this->success([
             'gift_title' => $giftTitle,
