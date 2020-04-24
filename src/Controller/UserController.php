@@ -7,13 +7,12 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Users\UserService;
 use App\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class UserController extends AbstractController
+class UserController extends BaseController
 {
     /**
      * @Route("/add-user.php")
@@ -41,26 +40,19 @@ class UserController extends AbstractController
         $iconId = $request->request->getInt('choix-illu' . $userId);
 
         if (empty($username)) {
-            return $this->json([
-                'reponse' => 'failed',
-                'message' => 'invalid username',
-            ], 400);
+            return $this->failed( 'Invalid username', 400);
         }
 
         $user = $repository->findById((int)$userId);
         if ($user === null) {
-            return $this->json([
-                'reponse' => 'failed',
-                'message' => 'user not found',
-            ], 404);
+            return $this->failed('User not found', 404);
         }
 
         $user->setName($username);
         $user->setIconId((int)$iconId);
         $repository->update($user);
 
-        return $this->json([
-            'reponse' => 'success',
+        return $this->success([
             'username' => $username,
         ]);
     }
@@ -74,8 +66,6 @@ class UserController extends AbstractController
 
         $service->delete($userId);
 
-        return $this->json([
-            'reponse' => 'success',
-        ]);
+        return $this->success();
     }
 }

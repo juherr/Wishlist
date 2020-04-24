@@ -6,13 +6,12 @@ namespace App\Controller;
 
 use App\Entity\Gift;
 use App\Repository\GiftRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class GiftController extends AbstractController
+class GiftController extends BaseController
 {
     /**
      * @Route("/add-gift.php")
@@ -33,15 +32,11 @@ class GiftController extends AbstractController
 
         $errors = $validator->validate($gift);
         if (count($errors) > 0) {
-            return $this->json([
-                'reponse' => 'failed',
-                'message' => (string) $errors,
-            ], 400);
+            return $this->failed((string) $errors, 400);
         }
 
         $giftId = $repository->create($gift);
-        return $this->json([
-            'reponse' => 'success',
+        return $this->success([
             'gift_title' => $title,
             'gift_url' => $url,
             'gift_description' => $description,
@@ -58,9 +53,7 @@ class GiftController extends AbstractController
 
         $repository->delete($giftId);
 
-        return $this->json([
-            'reponse' => 'success',
-        ]);
+        return $this->success();
     }
 
     /**
@@ -70,23 +63,16 @@ class GiftController extends AbstractController
     {
         $giftId = $request->request->getInt('gift-id');
         if ($giftId <= 0) {
-            return $this->json([
-                'reponse' => 'failed',
-                'message' => 'invalid gift-id',
-            ], 400);
+            return $this->failed('Invalid gift-id', 400);
         }
 
         $gift = $repository->findById($giftId);
         if ($gift === null) {
-            return $this->json([
-                'reponse' => 'failed',
-                'message' => 'gift not found',
-            ], 404);
+            return $this->failed('Gift not found', 404);
         }
         $gift->cancelBooking();
         $repository->update($gift);
-        return $this->json([
-            'reponse' => 'success',
+        return $this->success([
             'gift_id' => $giftId,
         ]);
     }
@@ -98,26 +84,19 @@ class GiftController extends AbstractController
     {
         $giftId = $request->request->getInt('gift-id');
         if ($giftId <= 0) {
-            return $this->json([
-                'reponse' => 'failed',
-                'message' => 'invalid gift-id',
-            ], 400);
+            return $this->failed('Invalid gift-id', 400);
         }
 
         $gift = $repository->findById((int)$giftId);
         if ($gift === null) {
-            return $this->json([
-                'reponse' => 'failed',
-                'message' => 'gift not found',
-            ], 404);
+            return $this->failed( 'gift not found', 404);
         }
 
         $currentUserId = $request->getSession()->get('user');
         $gift->book($currentUserId);
         $repository->update($gift);
 
-        return $this->json([
-            'reponse' => 'success',
+        return $this->success([
             'gift_id' => $giftId,
         ]);
     }
@@ -131,10 +110,7 @@ class GiftController extends AbstractController
 
         $gift = $repository->findById($giftId);
         if ($gift === null) {
-            return $this->json([
-                'reponse' => 'failed',
-                'message' => 'Gift not found'
-            ], 404);
+            return $this->failed('Gift not found', 404);
         }
 
         $giftTitle = $request->request->get('gift-name');
@@ -146,23 +122,16 @@ class GiftController extends AbstractController
 
         $errors = $validator->validate($gift);
         if (count($errors) > 0) {
-            return $this->json([
-                'reponse' => 'failed',
-                'message' => (string) $errors,
-            ], 400);
+            return $this->failed((string) $errors, 400);
         }
 
         if (empty($giftTitle)) {
-            return $this->json([
-                'reponse' => 'failed',
-                'message' => 'Invalid gift-name',
-            ], 400);
+            return $this->failed('Invalid gift-name', 400);
         }
 
         $repository->update($gift);
 
-        return $this->json([
-            'reponse' => 'success',
+        return $this->success([
             'gift_title' => $giftTitle,
             'gift_url' => $giftUrl,
             'gift_description' => $giftDescription,
