@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Users;
+namespace App\Service;
 
 use App\Entity\Gift;
 use App\Entity\User;
