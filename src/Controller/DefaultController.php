@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Gift;
-use App\Entity\User;
 use App\Repository\GiftRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -66,7 +64,7 @@ class DefaultController extends AbstractController
     /**
      * @Route("/logout.php")
      */
-    public function logout(Request $request)
+    public function logout(Request $request): Response
     {
         $request->getSession()->clear();
         return $this->redirectToRoute('login');

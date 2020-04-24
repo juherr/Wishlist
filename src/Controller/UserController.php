@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Gift;
 use App\Entity\User;
 use App\Users\UserService;
-use App\Repository\GiftRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
