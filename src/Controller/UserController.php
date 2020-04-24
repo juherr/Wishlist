@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Gift;
 use App\Entity\User;
 use App\Users\UserService;
 use App\Repository\GiftRepository;
@@ -27,8 +28,8 @@ class UserController extends AbstractController
             return Response::create('Invalid username', 400);
         }
 
-        $bdd = require __DIR__ . '/../inc/bdd.php';
-        $repository = new UserRepository($bdd);
+        /** @var UserRepository $repository */
+        $repository = $this->getDoctrine()->getRepository(User::class);
         $user = new User($username, $iconId);
         $repository->create($user);
         return $this->redirectToRoute('login');
@@ -50,8 +51,8 @@ class UserController extends AbstractController
             ], 400);
         }
 
-        $bdd = require __DIR__ . '/../inc/bdd.php';
-        $repository = new UserRepository($bdd);
+        /** @var UserRepository $repository */
+        $repository = $this->getDoctrine()->getRepository(User::class);
         $user = $repository->findById((int)$userId);
         if ($user === null) {
             return $this->json([
@@ -77,8 +78,12 @@ class UserController extends AbstractController
     {
         $userId = $request->request->getInt('user-id');
 
-        $bdd = require __DIR__ . '/../inc/bdd.php';
-        $service = new UserService(new UserRepository($bdd), new GiftRepository($bdd));
+        /** @var UserRepository $repository */
+        $repository = $this->getDoctrine()->getRepository(User::class);
+        /** @var GiftRepository $giftRepository */
+        $giftRepository = $this->getDoctrine()->getRepository(Gift::class);
+        // TODO use IOC instead
+        $service = new UserService($repository, $giftRepository);
         $service->delete($userId);
 
         return $this->json([

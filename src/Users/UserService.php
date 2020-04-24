@@ -35,8 +35,10 @@ class UserService
 
     public function delete(int $id): void
     {
+        // TODO transaction
         $this->repository->delete($id);
         // TODO remove, should be done by cascading
         $this->giftRepository->deleteAll($id);
+        // TODO delete bookings
     }
 }

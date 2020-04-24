@@ -5,28 +5,16 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\User;
+use Doctrine\ORM\EntityRepository;
 
-class UserRepository
+class UserRepository extends EntityRepository
 {
-    private \PDO $pdo;
-
-    public function __construct(\PDO $pdo)
-    {
-        $this->pdo = $pdo;
-    }
-
     public function create(User $user): int
     {
-        $statement = $this->pdo->prepare(<<<SQL
-            INSERT INTO kdo_personne (id_personne, nom_personne, choix_illu) 
-            VALUES (NULL, :username, :icon_id)
-        SQL);
-        $statement->bindValue(':username', $user->getName());
-        $statement->bindValue(':icon_id', $user->getIconId());
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
 
-        $statement->execute();
-
-        return (int) $this->pdo->lastInsertId();
+        return $user->getId();
     }
 
     public function findById(int $id): ?User
@@ -34,73 +22,31 @@ class UserRepository
         if ($id <= 0) {
             throw new \InvalidArgumentException('Invalid id: ' . $id);
         }
-        $statement = $this->pdo->prepare(<<<SQL
-            SELECT id_personne, nom_personne, choix_illu from kdo_personne 
-            WHERE id_personne = :id
-        SQL);
-        $statement->bindValue(':id', $id);
-        $statement->execute();
-        $item = $statement->fetch();
 
-        return self::createUser($item);
+        /** @var User|null $user */
+        $user = $this->find($id);
+        return $user;
     }
 
     /**
      * @return User[]
      */
-    public function findAll(): array
+    public function findAll()
     {
-        $statement = $this->pdo->prepare(<<<SQL
-            SELECT id_personne, nom_personne, choix_illu from kdo_personne 
-            ORDER BY nom_personne ASC
-        SQL);
-        $statement->execute();
-
-        $users = [];
-        foreach($statement->fetchAll() as $item) {
-            $users[] = self::createUser($item);
-        }
-        return $users;
-    }
-
-    private static function createUser(?array $item): ?User
-    {
-        if ($item === null) {
-            return null;
-        }
-
-        return new User(
-            $item['nom_personne'],
-            (int)$item['choix_illu'],
-            (int)$item['id_personne']
-        );
+        return parent::findBy([], ['name' => 'ASC']);
     }
 
     public function update(User $user): void
     {
-        if ($user->getId() <= 0) {
-            throw new \InvalidArgumentException('Invalid id: ' . $user->getId());
-        }
-        $statement = $this->pdo->prepare(<<<SQL
-            UPDATE kdo_personne
-            SET nom_personne = :username, 
-                choix_illu = :icon_id 
-            WHERE id_personne = :id
-        SQL);
-
-        $statement->bindValue(':username', $user->getName());
-        $statement->bindValue(':icon_id', $user->getIconId());
-        $statement->bindValue(':id', $user->getId());
-        $statement->execute();
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
     }
 
+    // TODO use entity
     public function delete(int $id): void
     {
-        if ($id <= 0) {
-            throw new \InvalidArgumentException('Invalid id: ' . $id);
-        }
-        $statement = $this->pdo->prepare('DELETE FROM kdo_personne WHERE id_personne = :id');
-        $statement->bindValue(':id', $id);
-        $statement->execute();
+        $user = $this->findById($id);
+        $this->getEntityManager()->remove($user);
+        $this->getEntityManager()->flush();
     }
 }

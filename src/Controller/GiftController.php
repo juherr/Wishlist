@@ -29,8 +29,9 @@ class GiftController extends AbstractController
                 'message' => 'empty title',
             ], 400);
         }
-        $bdd = require __DIR__ . '/../inc/bdd.php';
-        $repository = new GiftRepository($bdd);
+
+        /** @var GiftRepository $giftRepository */
+        $repository = $this->getDoctrine()->getRepository(Gift::class);
         $gift_id = $repository->create(new Gift(
             $userId,
             $title,
@@ -54,8 +55,8 @@ class GiftController extends AbstractController
     {
         $giftId = $request->request->getInt('gift-id');
 
-        $bdd = require_once __DIR__ . '/../inc/bdd.php';
-        $repository = new GiftRepository($bdd);
+        /** @var GiftRepository $giftRepository */
+        $repository = $this->getDoctrine()->getRepository(Gift::class);
         $repository->delete($giftId);
 
         return $this->json([
@@ -76,8 +77,8 @@ class GiftController extends AbstractController
             ], 400);
         }
 
-        $bdd = require __DIR__ . '/../inc/bdd.php';
-        $repository = new GiftRepository($bdd);
+        /** @var GiftRepository $giftRepository */
+        $repository = $this->getDoctrine()->getRepository(Gift::class);
         $gift = $repository->findById($giftId);
         if ($gift === null) {
             return $this->json([
@@ -106,8 +107,8 @@ class GiftController extends AbstractController
             ], 400);
         }
 
-        $bdd = require __DIR__ . '/../inc/bdd.php';
-        $repository = new GiftRepository($bdd);
+        /** @var GiftRepository $giftRepository */
+        $repository = $this->getDoctrine()->getRepository(Gift::class);
         $gift = $repository->findById((int)$giftId);
         if ($gift === null) {
             return $this->json([
@@ -143,8 +144,8 @@ class GiftController extends AbstractController
             ], 400);
         }
 
-        $bdd = require __DIR__ . '/../inc/bdd.php';
-        $repository = new GiftRepository($bdd);
+        /** @var GiftRepository $giftRepository */
+        $repository = $this->getDoctrine()->getRepository(Gift::class);
         $gift = $repository->findById((int)$giftId);
         if ($gift === null) {
             return $this->json([

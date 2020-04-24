@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Gift;
+use App\Entity\User;
 use App\Repository\GiftRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,9 +25,10 @@ class DefaultController extends AbstractController
             return $this->redirectToRoute('login');
         }
 
-        $bdd = require __DIR__ . '/../inc/bdd.php';
-        $userRepository = new UserRepository($bdd);
-        $giftRepository = new GiftRepository($bdd);
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->getDoctrine()->getRepository(User::class);
+        /** @var GiftRepository $giftRepository */
+        $giftRepository = $this->getDoctrine()->getRepository(Gift::class);
 
         $users = $userRepository->findAll();
         $gifts = [];
@@ -45,11 +48,12 @@ class DefaultController extends AbstractController
      */
     public function login(): Response
     {
-        $bdd = require __DIR__ . '/../inc/bdd.php';
-        $repository = new UserRepository($bdd);
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->getDoctrine()->getRepository(User::class);
+        $users = $userRepository->findAll();
 
         return $this->render('login.html.twig', [
-            'users' => $repository->findAll(),
+            'users' => $users,
         ]);
     }
 

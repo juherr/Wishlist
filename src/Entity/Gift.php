@@ -4,15 +4,52 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\GiftRepository")
+ * @ORM\Table(name="kdo_liste")
+ */
 class Gift
 {
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
     private ?int $id;
+
+    /**
+     * @ORM\Column(type="integer", name="la_personne")
+     */
+    // TODO reference
     private int $userId;
+
+    /**
+     * @ORM\Column(type="string", name="titre")
+     */
     private string $title;
-    private ?string $link;
+
+    /**
+     * @ORM\Column(type="string", name="lien")
+     */
+    private string $link;
+
+    /**
+     * @ORM\Column(type="text")
+     */
     private string $description;
+
+    /**
+     * @ORM\Column(type="boolean", name="reserve")
+     */
     private bool $isBooked;
-    private ?int $bookedByUserId;
+
+    /**
+     * @ORM\Column(type="integer", name="IdUser_resa")
+     */
+    // TODO reference
+    private int $bookedByUserId;
 
     public function __construct(
         int $userId,
@@ -39,10 +76,10 @@ class Gift
 
         $this->userId = $userId;
         $this->title = $title;
-        $this->link = $link;
+        $this->link = $link ?? '';
         $this->description = $description;
         $this->isBooked = $isBooked;
-        $this->bookedByUserId = $bookedByUserId;
+        $this->bookedByUserId = $bookedByUserId ?? 0;
         $this->id = $id;
     }
 
@@ -73,12 +110,15 @@ class Gift
 
     public function getLink(): ?string
     {
+        if (empty($this->link)) {
+            return null;
+        }
         return $this->link;
     }
 
     public function setLink(?string $link): void
     {
-        $this->link = $link;
+        $this->link = $link ?? '';
     }
 
     public function getDescription(): string
@@ -98,6 +138,9 @@ class Gift
 
     public function getBookedByUserId(): ?int
     {
+        if ($this->bookedByUserId === 0) {
+            return null;
+        }
         return $this->bookedByUserId;
     }
 
@@ -112,7 +155,7 @@ class Gift
 
     public function cancelBooking(): void
     {
-        $this->bookedByUserId = null;
+        $this->bookedByUserId = 0;
         $this->isBooked = false;
     }
 }
