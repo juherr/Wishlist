@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Users;
 
-use App\Gifts\GiftRepository;
+use App\Repository\GiftRepository;
+use App\Repository\UserRepository;
 
 class UserService
 {

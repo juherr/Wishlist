@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Gifts;
+namespace App\Entity;
 
 class Gift
 {

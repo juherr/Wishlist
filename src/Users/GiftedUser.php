@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Users;
 
-use App\Gifts\Gift;
+use App\Entity\Gift;
+use App\Entity\User;
 
 class GiftedUser extends User
 {

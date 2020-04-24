@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Gifts;
+namespace App\Repository;
+
+use App\Entity\Gift;
 
 class GiftRepository
 {
