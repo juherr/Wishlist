@@ -31,6 +31,9 @@ class BookingController extends BaseController
         if ($gift === null) {
             return $this->failed('Gift not found', 404);
         }
+        if (!$gift->isBooked()) {
+            return $this->failed('Gift not booked', 400);
+        }
         $gift->cancelBooking();
         $this->repository->update($gift);
         return $this->success([
@@ -48,9 +51,12 @@ class BookingController extends BaseController
             return $this->failed('Invalid gift-id', 400);
         }
 
-        $gift = $this->repository->findById((int)$giftId);
+        $gift = $this->repository->findById($giftId);
         if ($gift === null) {
-            return $this->failed( 'gift not found', 404);
+            return $this->failed( 'Gift not found', 404);
+        }
+        if ($gift->isBooked()) {
+            return $this->failed('Already booked', 400);
         }
 
         // TODO manage connected user

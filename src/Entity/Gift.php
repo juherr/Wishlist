@@ -146,6 +146,9 @@ class Gift
 
     public function book(int $bookedByUserId): void
     {
+        if ($this->isBooked) {
+            throw new \InvalidArgumentException('Gift already booked');
+        }
         if ($bookedByUserId <= 0) {
             throw new \InvalidArgumentException('Invalid user_id: ' . $bookedByUserId);
         }
@@ -155,6 +158,9 @@ class Gift
 
     public function cancelBooking(): void
     {
+        if (!$this->isBooked) {
+            throw new \InvalidArgumentException('Gift not booked');
+        }
         $this->bookedByUserId = 0;
         $this->isBooked = false;
     }
