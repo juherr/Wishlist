@@ -29,6 +29,9 @@ class UserRepository
 
     public function findById(int $id): ?User
     {
+        if ($id <= 0) {
+            throw new \InvalidArgumentException('Invalid id: ' . $id);
+        }
         $statement = $this->pdo->prepare(<<<SQL
             SELECT id_personne, nom_personne, choix_illu from kdo_personne 
             WHERE id_personne = :id
@@ -73,6 +76,9 @@ class UserRepository
 
     public function update(User $user): void
     {
+        if ($user->getId() <= 0) {
+            throw new \InvalidArgumentException('Invalid id: ' . $user->getId());
+        }
         $statement = $this->pdo->prepare(<<<SQL
             UPDATE kdo_personne
             SET nom_personne = :username, 
@@ -88,6 +94,9 @@ class UserRepository
 
     public function delete(int $id): void
     {
+        if ($id <= 0) {
+            throw new \InvalidArgumentException('Invalid id: ' . $id);
+        }
         $statement = $this->pdo->prepare('DELETE FROM kdo_personne WHERE id_personne = :id');
         $statement->bindValue(':id', $id);
         $statement->execute();

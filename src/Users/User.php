@@ -15,6 +15,9 @@ class User
         if ($id !== null && $id <= 0) {
             throw new \InvalidArgumentException('Invalid id: ' . $id);
         }
+        if ($iconId <= 0) {
+            throw new \InvalidArgumentException('Invalid icon_id: ' . $iconId);
+        }
         $this->id = $id;
         $this->name = $name;
         $this->iconId = $iconId;

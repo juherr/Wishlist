@@ -29,5 +29,13 @@ class UserService
             $giftedUsers[] = new GiftedUser($user, $gifts);
         }
 
+        return $giftedUsers;
+    }
+
+    public function delete(int $id): void
+    {
+        $this->repository->delete($id);
+        // TODO remove, should be done by cascading
+        $this->giftRepository->deleteAll($id);
     }
 }

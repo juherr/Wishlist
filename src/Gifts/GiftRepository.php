@@ -31,6 +31,9 @@ class GiftRepository
 
     public function findById(int $id): ?Gift
     {
+        if ($id <= 0) {
+            throw new \InvalidArgumentException('Invalid id: ' . $id);
+        }
         $statement = $this->pdo->prepare(<<<SQL
             SELECT id, la_personne, titre, lien, description, iduser_resa, reserve from kdo_liste 
             WHERE id = :id
@@ -48,6 +51,9 @@ class GiftRepository
      */
     public function findByUserId(int $userId): array
     {
+        if ($userId <= 0) {
+            throw new \InvalidArgumentException('Invalid user_id: ' . $userId);
+        }
         $statement = $this->pdo->prepare(<<<SQL
             SELECT id, la_personne, titre, lien, description, iduser_resa, reserve from kdo_liste 
             WHERE la_personne = :user_id
@@ -85,6 +91,9 @@ class GiftRepository
 
     public function update(Gift $gift): void
     {
+        if ($gift->getId() <= 0) {
+            throw new \InvalidArgumentException('Invalid id: ' . $gift->getId());
+        }
         $statement = $this->pdo->prepare(<<<SQL
             UPDATE kdo_liste
             SET titre = :title, 
@@ -107,6 +116,9 @@ class GiftRepository
 
     public function delete(int $id): void
     {
+        if ($id <= 0) {
+            throw new \InvalidArgumentException('Invalid id: ' . $id);
+        }
         $statement = $this->pdo->prepare('DELETE FROM kdo_liste WHERE id = :id');
         $statement->bindValue(':id', $id);
         $statement->execute();

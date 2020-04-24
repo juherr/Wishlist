@@ -52,4 +52,26 @@ class DefaultController extends AbstractController
             'users' => $repository->findAll(),
         ]);
     }
+
+    /**
+     * @Route("/user-connection.php")
+     */
+    public function connect(Request $request): Response
+    {
+        $userId = $request->request->getInt('id_personne');
+        if ($userId <= 0) {
+            return $this->redirectToRoute('login');
+        }
+        $request->getSession()->set('user', $userId);
+        return $this->redirectToRoute('index');
+    }
+
+    /**
+     * @Route("/logout.php")
+     */
+    public function logout(Request $request)
+    {
+        $request->getSession()->clear();
+        return $this->redirectToRoute('login');
+    }
 }
