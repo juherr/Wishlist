@@ -42,7 +42,7 @@ class GiftRepository extends ServiceEntityRepository
         if ($userId <= 0) {
             throw new \InvalidArgumentException('Invalid user_id: ' . $userId);
         }
-        return $this->findBy(['userId' => $userId]);
+        return $this->findBy(['user' => $userId]);
     }
 
     public function update(Gift $gift): void
@@ -51,10 +51,8 @@ class GiftRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
-    // TODO replace id by entity
-    public function delete(int $id): void
+    public function delete(Gift $gift): void
     {
-        $gift = $this->findById($id);
         $this->getEntityManager()->remove($gift);
         $this->getEntityManager()->flush();
     }

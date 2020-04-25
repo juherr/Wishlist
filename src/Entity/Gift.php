@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="kdo_liste")
+ * @ORM\Table(name="kdo_gifts")
  */
 class Gift
 {
@@ -20,66 +20,50 @@ class Gift
     private ?int $id;
 
     /**
-     * @ORM\Column(type="integer", name="la_personne")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="gifts")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
-    // TODO reference
-    private int $userId;
+    private User $user;
 
     /**
-     * @ORM\Column(type="string", name="titre")
+     * @ORM\Column(type="string", name="title", length=300)
      */
     private string $title;
 
     /**
-     * @ORM\Column(type="string", name="lien")
+     * @ORM\Column(type="string", name="link", length=2000, nullable=true)
      */
-    private string $link;
+    private ?string $link;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", name="description", nullable=true)
      */
-    private string $description;
+    private ?string $description;
 
     /**
-     * @ORM\Column(type="boolean", name="reserve")
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="booked_by", referencedColumnName="id", nullable=true)
      */
-    private bool $isBooked;
-
-    /**
-     * @ORM\Column(type="integer", name="IdUser_resa")
-     */
-    // TODO reference
-    private int $bookedByUserId;
+    private ?User $bookedBy;
 
     public function __construct(
-        int $userId,
+        User $user,
         string $title,
         ?string $link,
-        string $description,
-        bool $isBooked,
-        ?int $bookedByUserId = null,
+        ?string $description,
+        ?User $bookedBy = null,
         ?int $id = null
     )
     {
         if ($id !== null && $id <= 0) {
             throw new \InvalidArgumentException('Invalid id: ' . $id);
         }
-        if ($userId <= 0) {
-            throw new \InvalidArgumentException('Invalid user_id: ' . $userId);
-        }
-        if ($bookedByUserId !== null && $bookedByUserId <= 0) {
-            throw new \InvalidArgumentException('Invalid booked_by_user_id: ' . $bookedByUserId);
-        }
-        if ($isBooked && $bookedByUserId === null) {
-            throw new \InvalidArgumentException('Booked gift but no user');
-        }
 
-        $this->userId = $userId;
+        $this->user = $user;
         $this->title = $title;
-        $this->link = $link ?? '';
+        $this->link = $link;
         $this->description = $description;
-        $this->isBooked = $isBooked;
-        $this->bookedByUserId = $bookedByUserId ?? 0;
+        $this->bookedBy = $bookedBy;
         $this->id = $id;
     }
 
@@ -88,14 +72,9 @@ class Gift
         return $this->id;
     }
 
-    public function getUserId(): int
+    public function getUser(): User
     {
-        return $this->userId;
-    }
-
-    public function setUserId(int $userId): void
-    {
-        $this->userId = $userId;
+        return $this->user;
     }
 
     public function getTitle(): string
@@ -110,58 +89,56 @@ class Gift
 
     public function getLink(): ?string
     {
-        if (empty($this->link)) {
-            return null;
-        }
         return $this->link;
     }
 
     public function setLink(?string $link): void
     {
-        $this->link = $link ?? '';
+        if (empty($link)) {
+            $link = null;
+        }
+        $this->link = $link;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(?string $description): void
     {
+        if (empty($description)) {
+            $description = null;
+        }
         $this->description = $description;
     }
 
     public function isBooked(): bool
     {
-        return $this->isBooked;
+        return $this->bookedBy !== null && $this->bookedBy->getId() > 0;
     }
 
-    public function getBookedByUserId(): ?int
+    public function getBookedBy(): ?User
     {
-        if ($this->bookedByUserId === 0) {
-            return null;
-        }
-        return $this->bookedByUserId;
+        return $this->bookedBy;
     }
 
-    public function book(int $bookedByUserId): void
+    public function book(User $user): void
     {
-        if ($this->isBooked) {
+        if ($this->isBooked()) {
             throw new \InvalidArgumentException('Gift already booked');
         }
-        if ($bookedByUserId <= 0) {
-            throw new \InvalidArgumentException('Invalid user_id: ' . $bookedByUserId);
+        if ($user->getId() <= 0) {
+            throw new \InvalidArgumentException('Invalid user');
         }
-        $this->bookedByUserId = $bookedByUserId;
-        $this->isBooked = true;
+        $this->bookedBy = $user;
     }
 
     public function cancelBooking(): void
     {
-        if (!$this->isBooked) {
+        if (!$this->isBooked()) {
             throw new \InvalidArgumentException('Gift not booked');
         }
-        $this->bookedByUserId = 0;
-        $this->isBooked = false;
+        $this->bookedBy = null;
     }
 }

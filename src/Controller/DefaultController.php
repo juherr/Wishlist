@@ -34,7 +34,11 @@ class DefaultController extends AbstractController
     {
         $userId = $request->request->getInt('id_personne');
         if ($userId > 0) {
-            $request->getSession()->set('user', $userId);
+            $user = $this->userRepository->findById($userId);
+            if ($user === null) {
+                return Response::create('Invalid user', 403);
+            }
+            $request->getSession()->set('user', $user->getId());
         }
         return $this->redirectToRoute('user_list');
     }

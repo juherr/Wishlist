@@ -4,18 +4,22 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Repository\GiftRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class BookingController extends BaseController
 {
-    private GiftRepository $repository;
+    private GiftRepository $giftRepository;
+    private UserRepository $userRepository;
 
-    public function __construct(GiftRepository $repository)
+    public function __construct(GiftRepository $giftRepository, UserRepository $userRepository)
     {
-        $this->repository = $repository;
+        $this->giftRepository = $giftRepository;
+        $this->userRepository = $userRepository;
     }
     /**
      * @Route("/delete_reservation.php", name="booking_delete")
@@ -27,7 +31,7 @@ class BookingController extends BaseController
             return $this->failed('Invalid gift-id', 400);
         }
 
-        $gift = $this->repository->findById($giftId);
+        $gift = $this->giftRepository->findById($giftId);
         if ($gift === null) {
             return $this->failed('Gift not found', 404);
         }
@@ -35,7 +39,7 @@ class BookingController extends BaseController
             return $this->failed('Gift not booked', 400);
         }
         $gift->cancelBooking();
-        $this->repository->update($gift);
+        $this->giftRepository->update($gift);
         return $this->success([
             'gift_id' => $giftId,
         ]);
@@ -46,12 +50,18 @@ class BookingController extends BaseController
      */
     public function create(Request $request): JsonResponse
     {
+        /** @var int|null $currentUserId */
+        $currentUserId = $request->getSession()->get('user');
+        if ($currentUserId === null) {
+            return $this->failed('Not connected', 403);
+        }
+
         $giftId = $request->request->getInt('gift-id');
         if ($giftId <= 0) {
             return $this->failed('Invalid gift-id', 400);
         }
 
-        $gift = $this->repository->findById($giftId);
+        $gift = $this->giftRepository->findById($giftId);
         if ($gift === null) {
             return $this->failed( 'Gift not found', 404);
         }
@@ -59,10 +69,9 @@ class BookingController extends BaseController
             return $this->failed('Already booked', 400);
         }
 
-        // TODO manage connected user
-        $currentUserId = $request->getSession()->get('user');
-        $gift->book($currentUserId);
-        $this->repository->update($gift);
+        $currentUser = $this->userRepository->findById($currentUserId);
+        $gift->book($currentUser);
+        $this->giftRepository->update($gift);
 
         return $this->success([
             'gift_id' => $giftId,

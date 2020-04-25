@@ -34,10 +34,10 @@
                     </div>
 
                     <ul class="gift-list">
-                        {% for gift in attribute(gifts, user.id) %}
+                        {% for gift in user.gifts %}
 
                         {# Si le cadeau est réservé et qu'on est pas sur notre propre liste, on le marque différemment #}
-                        <li {{ gift.booked and user.id != loggedUserId ? 'class="reserve"' }}>
+                        <li {{ gift.booked and user.id != loggedUser.id ? 'class="reserve"' }}>
                             <div class="wrapper-title">
 
                                 <p class="gift-title">{{ gift.title }}</p>
@@ -51,7 +51,7 @@
                                 {% endif %}
 
                                 {# Chaque personne identifié peut modifier sa propre liste #}
-                                {% if user.id == loggedUserId %}
+                                {% if user.id == loggedUser.id %}
                                 <span class="submit-delete ico-trash">
                                     <svg viewBox="0 0 100 100" class="icon">
                                         <use xlink:href="#icon-ico-trash"></use>
@@ -85,16 +85,16 @@
                                     {# Si le cadeau est réservé #}
                                     {% else %}
                                         {# Si il est réservé par moi, je peux annuler #}
-                                        {% if gift.bookedByUserId == loggedUserId %}
+                                        {% if gift.bookedBy.id == loggedUser.id %}
                                         <form action="{{ path('booking_delete') }}" method="post" id="cancel_resa">
                                             <input type="hidden" value="{{ gift.id }}" name="gift-id">
                                             <input type="submit" value="Annuler" class="bt bt_annuler" title="Tu as indiqué vouloir réserver ce cadeau. Changé d'avis ?">
                                         </form>
                                         {# Si il est réservé par qqun d'autre, j'affiche ce qqun d'autre #}
                                         {% else %}
-                                        <div class="resaPar" title="{{ attribute(users, gift.bookedByUserId).name }} a réservé ce cadeau">
-                                            <img src='{{ asset("img/perso#{attribute(users, gift.bookedByUserId).iconId}.png") }}'>
-                                            <span>{{ attribute(users, gift.bookedByUserId).name }}</span>
+                                        <div class="resaPar" title="{{ gift.bookedBy.name }} a réservé ce cadeau">
+                                            <img src='{{ asset("img/perso#{gift.bookedBy.iconId}.png") }}'>
+                                            <span>{{ gift.bookedBy.name }}</span>
                                         </div>
                                         {% endif %}
                                     {% endif %}
@@ -106,7 +106,7 @@
                             {% endif %}
 
                             {# Chaque personne identifié peut modifier sa propre liste #}
-                            {% if gift.userId == loggedUserId %}
+                            {% if gift.user.id == loggedUser.id %}
                             {# Le formulaire, pour edition #}
                             <form class="form-gift form-edit" action="{{ path('gift_update') }}" method="post">
                                 <div class="wrapper-gift-input">
@@ -167,7 +167,7 @@
                         <input type="submit" class="bt" value="Ajouter le cadeau">
                     </form>
 
-                    {% if user.id == loggedUserId %}
+                    {% if user.id == loggedUser.id %}
                     <div class="wrapper-bt wrapper-add">
                         <button class="bt bt-add-gift">Ajouter un cadeau</button>
                     </div>

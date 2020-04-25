@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Gift;
 use App\Repository\GiftRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,11 +15,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class GiftController extends BaseController
 {
     private GiftRepository $repository;
+    private UserRepository $userRepository;
     private ValidatorInterface $validator;
 
-    public function __construct(GiftRepository $repository, ValidatorInterface $validator)
+    public function __construct(
+        GiftRepository $repository,
+        UserRepository $userRepository,
+        ValidatorInterface $validator
+    )
     {
         $this->repository = $repository;
+        $this->userRepository = $userRepository;
         $this->validator = $validator;
     }
 
@@ -27,16 +34,24 @@ class GiftController extends BaseController
      */
     public function add(Request $request): JsonResponse
     {
+        /** @var int|null $currentUserId */
+        $currentUserId = $request->getSession()->get('user');
+        if ($currentUserId === null) {
+            return $this->failed('Not connected', 403);
+        }
         $title = $request->request->get('gift-name');
         $url = $request->request->get('gift-url');
         $description = $request->request->get('gift-description');
         $userId = $request->request->getInt('gift-user');
+        if ($userId !== $currentUserId) {
+            return $this->failed('Invalid user', 401);
+        }
+        $currentUser = $this->userRepository->findById($userId);
         $gift = new Gift(
-            $userId,
+            $currentUser,
             $title,
             $url,
             $description,
-            false
         );
 
         $errors = $this->validator->validate($gift);
@@ -59,8 +74,12 @@ class GiftController extends BaseController
     public function delete(Request $request): JsonResponse
     {
         $giftId = $request->request->getInt('gift-id');
+        $gift = $this->repository->findById($giftId);
+        if ($gift === null) {
+            return $this->failed('Gift not found', 404);
+        }
 
-        $this->repository->delete($giftId);
+        $this->repository->delete($gift);
 
         return $this->success();
     }

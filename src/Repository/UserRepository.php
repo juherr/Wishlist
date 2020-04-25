@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 
 class UserRepository extends ServiceEntityRepository
@@ -37,7 +38,7 @@ class UserRepository extends ServiceEntityRepository
     /**
      * @return User[]
      */
-    public function findAll()
+    public function findAll(): array
     {
         return parent::findBy([], ['name' => 'ASC']);
     }
@@ -48,10 +49,8 @@ class UserRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
-    // TODO use entity
-    public function delete(int $id): void
+    public function delete(User $user): void
     {
-        $user = $this->findById($id);
         $this->getEntityManager()->remove($user);
         $this->getEntityManager()->flush();
     }

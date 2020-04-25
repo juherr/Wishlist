@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Repository\GiftRepository;
-use App\Service\UserService;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,20 +15,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UserController extends BaseController
 {
     private UserRepository $repository;
-    private GiftRepository $giftRepository;
-    private UserService $service;
     private ValidatorInterface $validator;
 
-    public function __construct(
-        UserRepository $repository,
-        GiftRepository $giftRepository,
-        UserService $service,
-        ValidatorInterface $validator
-    )
+    public function __construct(UserRepository $repository, ValidatorInterface $validator)
     {
         $this->repository = $repository;
-        $this->giftRepository = $giftRepository;
-        $this->service = $service;
         $this->validator = $validator;
     }
 
@@ -92,8 +81,12 @@ class UserController extends BaseController
     public function delete(Request $request): JsonResponse
     {
         $userId = $request->request->getInt('user-id');
+        $user = $this->repository->findById($userId);
+        if ($user === null) {
+            return $this->failed('User not found', 404);
+        }
 
-        $this->service->delete($userId);
+        $this->repository->delete($user);
 
         return $this->success();
     }
@@ -105,24 +98,17 @@ class UserController extends BaseController
     {
         $users = $this->repository->findAll();
 
-        $userId = $request->getSession()->get('user');
-        if (empty($userId)) {
+        $currentUserId = $request->getSession()->get('user');
+        if ($currentUserId === null) {
             return $this->render('login.html.twig', [
                 'users' => $users,
             ]);
         }
+        $currentUser = $this->repository->findById($currentUserId);
 
-        // TODO service
-        $gifts = [];
-        $usersById = [];
-        foreach ($users as $user) {
-            $gifts[$user->getId()] = $this->giftRepository->findByUserId($user->getId());
-            $usersById[$user->getId()] = $user;
-        }
         return $this->render('index.html.twig', [
-            'users' => $usersById,
-            'gifts' => $gifts,
-            'loggedUserId' => $userId,
+            'users' => $users,
+            'loggedUser' => $currentUser,
         ]);
     }
 }

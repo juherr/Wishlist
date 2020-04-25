@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="kdo_personne")
+ * @ORM\Table(name="kdo_users")
  */
 // TODO manage prefix
 class User
@@ -16,19 +18,24 @@ class User
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer", name="id_personne")
+     * @ORM\Column(type="integer", name="id")
      */
     private ?int $id;
 
     /**
-     * @ORM\Column(type="string", name="nom_personne")
+     * @ORM\Column(type="string", name="name", length=30)
      */
     private string $name;
 
     /**
-     * @ORM\Column(type="integer", name="choix_illu")
+     * @ORM\Column(type="integer", name="icon_id")
      */
     private int $iconId;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Gift", mappedBy="user", orphanRemoval=true, cascade={"remove"})
+     */
+    private Collection $gifts;
 
     public function __construct(string $name, int $iconId, ?int $id = null)
     {
@@ -41,6 +48,7 @@ class User
         $this->id = $id;
         $this->name = $name;
         $this->iconId = $iconId;
+        $this->gifts = new ArrayCollection();
     }
 
     public function getId(): int
@@ -66,5 +74,13 @@ class User
     public function setIconId(int $iconId): void
     {
         $this->iconId = $iconId;
+    }
+
+    /**
+     * @return Collection|Gift[]
+     */
+    public function getGifts(): Collection
+    {
+        return $this->gifts;
     }
 }
