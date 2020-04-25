@@ -114,12 +114,13 @@ class UserController extends BaseController
 
         // TODO service
         $gifts = [];
+        $usersById = [];
         foreach ($users as $user) {
             $gifts[$user->getId()] = $this->giftRepository->findByUserId($user->getId());
-            $users[$user->getId()] = $user;
+            $usersById[$user->getId()] = $user;
         }
         return $this->render('index.html.twig', [
-            'users' => $users,
+            'users' => $usersById,
             'gifts' => $gifts,
             'loggedUserId' => $userId,
         ]);

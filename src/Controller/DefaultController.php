@@ -40,7 +40,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/logout.php")
+     * @Route("/logout.php", name="logout")
      */
     public function logout(Request $request): Response
     {
