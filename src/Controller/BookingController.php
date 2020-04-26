@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Repository\GiftRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,9 +33,6 @@ class BookingController extends BaseController
         $gift = $this->giftRepository->findById($giftId);
         if ($gift === null) {
             return $this->failed('Gift not found', 404);
-        }
-        if (!$gift->isBooked()) {
-            return $this->failed('Gift not booked', 400);
         }
         $gift->cancelBooking();
         $this->giftRepository->update($gift);
