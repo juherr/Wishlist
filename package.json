@@ -5,8 +5,8 @@
   "author": "locher",
   "license": "",
   "scripts": {
-    "dev": "grunt",
-    "prod": "grunt",
+    "dev": "grunt build",
+    "prod": "grunt build",
     "watch": "grunt watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "grunt clean"
@@ -27,6 +27,7 @@
     "grunt-sass": "^3.1",
     "grunt-svgmin": "^6.0",
     "grunt-svgstore": "^2.0",
+    "load-grunt-tasks": "^5.1.0",
     "node-sass": "^4.14"
   }
 }

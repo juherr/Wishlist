@@ -1,6 +1,8 @@
 'use strict';
 
-module.exports = function(grunt){
+module.exports = grunt => {
+
+	require('load-grunt-tasks')(grunt);
 
 	const sass = require('node-sass');
 
@@ -47,6 +49,7 @@ module.exports = function(grunt){
 		svgmin: {
 	        options: {
 	            plugins: [
+					{ cleanupIDs: false },
 	                { removeViewBox: false },
 	                { removeUselessStrokeAndFill: false }
 	            ]
@@ -127,18 +130,10 @@ module.exports = function(grunt){
 		}
 	});
 
-	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-downloadfile');
-	grunt.loadNpmTasks('grunt-sass');
-	grunt.loadNpmTasks('grunt-autoprefixer');
-	grunt.loadNpmTasks('grunt-contrib-clean');
-	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('grunt-svgmin');
-	grunt.loadNpmTasks('grunt-svgstore');
-
 	grunt.registerTask('css', ['sass', 'autoprefixer']);
 	grunt.registerTask('svg', ['svgstore', 'copy:svg', 'svgmin']);
 	grunt.registerTask('png', ['copy:png']);
-	grunt.registerTask('js', ['copy:js']);
-	grunt.registerTask('default', ['css', 'svg', 'png', 'js']);
+	grunt.registerTask('js', ['copy:js', 'downloadfile']);
+	grunt.registerTask('build', ['clean', 'css', 'svg', 'png', 'js']);
+	grunt.registerTask('default', ['build', 'watch']);
 }
