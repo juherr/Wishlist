@@ -2,6 +2,10 @@ node_modules/*
 .htaccess
 *.phar
 .idea/
+templates/assets/*
+public/**/*.css
+public/**/*.css.map
+public/**/*.png
 
 ###> symfony/framework-bundle ###
 /.env.local

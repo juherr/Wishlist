@@ -1,25 +1,28 @@
 module.exports = function(grunt){
 
+	const sass = require('node-sass');
+
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		watch: {
 			'default': {
-				files: ['Gruntfile.js', 'public/sass/*.scss', 'public/img/svg-dev/*.svg'],
+				files: ['Gruntfile.js', 'assets/sass/*.scss', 'assets/svg/**/*.svg'],
 				tasks: ['sass:dev', 'autoprefixer']
 			},
 			'svg': {
-				files: ['Gruntfile.js', 'public/img/svg-dev/*.svg', 'public/img/svg-dev/sprite/*.svg'],
+				files: ['Gruntfile.js', 'public/img/svg-dev/*.svg', 'assets/svg/**/*.svg'],
 				tasks: ['svgmin', 'svgstore']
 			}
 		},
 		sass: {
 			options:{
+				implementation: sass,
 				sourceMap: true,
-				outFile: "style.css",
+				outFile: 'public/style.css',
 			},
 			dev: {
 				files: {
-					'style.css': 'public/sass/styles.scss',
+					'public/style.css': 'assets/sass/styles.scss',
 				},
 				options:{
 					style: 'expanded',
@@ -35,10 +38,9 @@ module.exports = function(grunt){
 
 			},
 			prefix: {
-				src: 'style.css',
-				dest: 'style.css'
+				src: 'public/style.css',
+				dest: 'public/style.css'
 			},
-
 		},
 		svgmin: {
 	        options: {
@@ -50,9 +52,9 @@ module.exports = function(grunt){
 	        dist: {
 	            files: [{
                     expand: true,
-                    cwd: 'public/img/svg-dev',
+                    cwd: 'templates/assets',
                     src: '*.svg',
-                    dest: 'public/img/svg-prod'
+                    dest: 'templates/assets'
                 }]
 	        }
 	    },
@@ -66,16 +68,41 @@ module.exports = function(grunt){
 		    },
 		    your_target: {
 		      files:{
-		      	'public/img/svg-prod/sprite/svgs.svg' : ['public/img/svg-dev/sprite/*.svg'],
-		      	'templates/assets/svgs.svg' : ['public/img/svg-dev/sprite/*.svg'],
+		      	'templates/assets/svgs.svg' : ['assets/svg/sprite/*.svg']
 		      },
 		    },
 		},
+		copy: {
+			svg: {
+				expand:true,
+				cwd: 'assets/svg/',
+				src: 'logo.svg',
+				dest: 'templates/assets/',
+			},
+			png: {
+				expand:true,
+				cwd: 'assets/png/',
+				src: '*.png',
+				dest: 'public/img/',
+			}
+		},
+		clean: {
+			svg: ['templates/assets/*.svg'],
+			png: ['public/**/*.png'],
+			css: ['public/**/*.css', 'public/**.css.map']
+		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-autoprefixer');
+	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-svgmin');
 	grunt.loadNpmTasks('grunt-svgstore');
+
+	grunt.registerTask('css', ['sass', 'autoprefixer']);
+	grunt.registerTask('svg', ['svgstore', 'copy:svg', 'svgmin']);
+	grunt.registerTask('png', ['copy:png']);
+	grunt.registerTask('default', ['css', 'svg', 'png']);
 }
