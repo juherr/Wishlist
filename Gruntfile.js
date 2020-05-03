@@ -26,6 +26,12 @@ module.exports = grunt => {
 				tasks: ['js']
 			}
 		},
+		concat: {
+			js: {
+				src: 'assets/js/*.js',
+				dest: 'public/js/scripts.js'
+			},
+		},
 		sass: {
 			options:{
 				implementation: sass,
@@ -114,11 +120,6 @@ module.exports = grunt => {
 					cwd: 'node_modules/jquery/dist/',
 					src: 'jquery.min.js',
 					dest: 'public/js/',
-				},{
-					expand: true,
-					cwd: 'assets/js',
-					src: '**/*.js',
-					dest: 'public/js/',
 				}],
 			},
 		},
@@ -141,7 +142,7 @@ module.exports = grunt => {
 	grunt.registerTask('css', ['sass', 'autoprefixer']);
 	grunt.registerTask('svg', ['svgstore', 'copy:svg', 'svgmin']);
 	grunt.registerTask('png', ['copy:png']);
-	grunt.registerTask('js', ['copy:js', 'downloadfile']);
+	grunt.registerTask('js', ['copy:js', 'downloadfile', 'concat:js']);
 	grunt.registerTask('build', ['clean', 'css', 'svg', 'png', 'js']);
 	grunt.registerTask('default', ['build', 'watch']);
 }
