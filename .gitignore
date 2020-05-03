@@ -6,6 +6,7 @@ templates/assets/*
 public/**/*.css
 public/**/*.css.map
 public/**/*.png
+public/**/*.js
 
 ###> symfony/framework-bundle ###
 /.env.local

@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function(grunt){
 
 	const sass = require('node-sass');
@@ -84,16 +86,49 @@ module.exports = function(grunt){
 				cwd: 'assets/png/',
 				src: '*.png',
 				dest: 'public/img/',
+			},
+			js: {
+				files: [{
+					expand: true,
+					cwd: 'node_modules/masonry-layout/dist/',
+					src: 'masonry.pkgd.min.js',
+					dest: 'public/js/',
+				},{
+					expand: true,
+					cwd: 'node_modules/jquery.scrollto/',
+					src: 'jquery.scrollTo.min.js',
+					dest: 'public/js/',
+				},{
+					expand: true,
+					cwd: 'node_modules/jquery/dist/',
+					src: 'jquery.min.js',
+					dest: 'public/js/',
+				},{
+					expand: true,
+					cwd: 'assets/js',
+					src: '**/*.js',
+					dest: 'public/js/',
+				}],
+			},
+		},
+		downloadfile: {
+			options: {
+				serverUrl: '',
+			},
+			files: {
+				'public/js/snowstorm-min.js': 'https://raw.githubusercontent.com/scottschiller/Snowstorm/snowstorm_20131208/snowstorm-min.js',
 			}
 		},
 		clean: {
 			svg: ['templates/assets/*.svg'],
 			png: ['public/**/*.png'],
-			css: ['public/**/*.css', 'public/**.css.map']
+			css: ['public/**/*.css', 'public/**.css.map'],
+			js: ['public/**/*.js'],
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-downloadfile');
 	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-autoprefixer');
 	grunt.loadNpmTasks('grunt-contrib-clean');
@@ -104,5 +139,6 @@ module.exports = function(grunt){
 	grunt.registerTask('css', ['sass', 'autoprefixer']);
 	grunt.registerTask('svg', ['svgstore', 'copy:svg', 'svgmin']);
 	grunt.registerTask('png', ['copy:png']);
-	grunt.registerTask('default', ['css', 'svg', 'png']);
+	grunt.registerTask('js', ['copy:js']);
+	grunt.registerTask('default', ['css', 'svg', 'png', 'js']);
 }
