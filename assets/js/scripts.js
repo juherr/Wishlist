@@ -59,7 +59,7 @@
 
         // Modal ajouter personne
         // Le titre change quand on tape
-        $('.modal-add-user .input-name').keyup(function () {
+        $('.modal-add-user .input-name').on('keyup', function () {
 
             var nom_personne = $(this).val();
             var phrase_ajout = 'Ajouter ' + nom_personne;
@@ -75,7 +75,7 @@
         });
 
         // L'illu change quand on la sélectionne
-        $('.modal-add-user .wrapper-illus').change(function () {
+        $('.modal-add-user .wrapper-illus').on('change', function () {
             var illu_name = $(this).find('input[type="radio"]:checked').attr('class');
             $(this).parent().parent().find('.illu').html('<img src="/img/' + illu_name + '.png"/>');
         });
@@ -112,7 +112,7 @@
 
         // Edit user
         // Le titre change quand on tape
-        $('.edit-user .input-name').keyup(function () {
+        $('.edit-user .input-name').on('keyup', function () {
             var nom_personne = $(this).val();
             var phrase_ajout = 'Modifier ' + nom_personne;
 
@@ -124,7 +124,7 @@
         });
 
         // L'illu change quand on la sélectionne
-        $('.edit-user .wrapper-illus').change(function () {
+        $('.edit-user .wrapper-illus').on('change', function () {
             var illu_name = $(this).find('input[type="radio"]:checked').attr('class');
             $(this).parent().parent().parent().find('.illu').html('<img src="/img/' + illu_name + '.png"/>');
         });

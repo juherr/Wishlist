@@ -10,12 +10,20 @@ module.exports = grunt => {
 		pkg: grunt.file.readJSON('package.json'),
 		watch: {
 			'default': {
-				files: ['Gruntfile.js', 'assets/sass/*.scss', 'assets/svg/**/*.svg'],
-				tasks: ['sass:dev', 'autoprefixer']
+				files: ['Gruntfile.js'],
+				tasks: ['build']
+			},
+			'css': {
+				files: ['assets/sass/**/*.scss'],
+				tasks: ['css']
 			},
 			'svg': {
-				files: ['Gruntfile.js', 'public/img/svg-dev/*.svg', 'assets/svg/**/*.svg'],
-				tasks: ['svgmin', 'svgstore']
+				files: ['assets/svg/**/*.svg'],
+				tasks: ['svg', 'css']
+			},
+			'js': {
+				files: ['assets/js/**/*.js'],
+				tasks: ['js']
 			}
 		},
 		sass: {
@@ -79,13 +87,13 @@ module.exports = grunt => {
 		},
 		copy: {
 			svg: {
-				expand:true,
+				expand: true,
 				cwd: 'assets/svg/',
 				src: 'logo.svg',
 				dest: 'templates/assets/',
 			},
 			png: {
-				expand:true,
+				expand: true,
 				cwd: 'assets/png/',
 				src: '*.png',
 				dest: 'public/img/',
