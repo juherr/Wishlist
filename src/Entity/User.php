@@ -10,9 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="kdo_users")
+ * @ORM\Table(name="users")
  */
-// TODO manage prefix
 class User
 {
     /**

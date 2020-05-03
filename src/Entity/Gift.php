@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="kdo_gifts")
+ * @ORM\Table(name="gifts")
  */
 class Gift
 {
