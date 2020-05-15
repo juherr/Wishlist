@@ -3,6 +3,7 @@
 import '../sass/styles.scss';
 import {msnry} from './commons';
 import $ from 'jquery';
+import i18n from './utils/i18n';
 
 $('body')
 
@@ -18,9 +19,9 @@ $('body')
         });
 
         if ($this.hasClass('open')) {
-            $this.html('Annuler');
+            $this.html(i18n.t('cancel'));
         } else {
-            $this.html('Ajouter un cadeau');
+            $this.html(i18n.t('gift.add.title'));
         }
     })
 
@@ -83,7 +84,7 @@ $('body')
         // Je vérifie une première fois pour ne pas lancer la requête HTTP
         // si je sais que mon PHP renverra une erreur
         if (giftTitle === '') {
-            alert('Les champs doivent êtres remplis');
+            alert(i18n.t('empty_form'));
             return;
         }
         // Envoi de la requête HTTP en mode asynchrone
@@ -100,7 +101,7 @@ $('body')
                 let giftUrlCode = '';
                 if (json.gift_url !== '') {
                     giftUrlCode =
-                        '<a title="Lien vers le cadeau" href="' + json.gift_url + '" class="gift-link">' +
+                        '<a title="' + i18n.t('gift.link') + '" href="' + json.gift_url + '" class="gift-link">' +
                         '  <svg viewBox="0 0 100 100" class="icon">' +
                         '    <use xlink:href="#icon-link"></use>' +
                         '  </svg>' +
@@ -123,14 +124,14 @@ $('body')
                     '      </svg>' +
                     '    </span>' +
                     '    <div class="confirmation-suppression">' +
-                    '      <p>Êtes-vous sûr ?</p>' +
+                    '      <p>' + i18n.t('delete.confirmation') + '</p>' +
                     '      <form action="' + route_gift_delete + '" method="post">' +
                     '        <input type="hidden" value="' + json.gift_id + '" name="gift-id">' +
-                    '        <input type="submit" class="confirm-suppression bt" value="Oui" />' +
+                    '        <input type="submit" class="confirm-suppression bt" value="' + i18n.t('yes') + '" />' +
                     '      </form>' +
-                    '      <p class="annuler-suppression">Non, annuler</p>' +
+                    '      <p class="annuler-suppression">' + i18n.t('delete.cancel') + '</p>' +
                     '    </div>' +
-                    '    <span class="ico-edit" title="Éditer le cadeau">' +
+                    '    <span class="ico-edit" title="' + i18n.t('gift.edit.title') + '">' +
                     '      <svg viewBox="0 0 100 100" class="icon">' +
                     '        <use xlink:href="#icon-ico-edit"></use>' +
                     '      </svg>' +
@@ -144,7 +145,7 @@ $('body')
                     '          <use xlink:href="#icon-ico-item"></use>' +
                     '        </svg>' +
                     '      </span>' +
-                    '      <input type="text" name="gift-name" required placeholder="Désignation" value="' + giftTitle + '">' +
+                    '      <input type="text" name="gift-name" required placeholder="' + i18n.t('gift.placeholder.title') + '" value="' + giftTitle + '">' +
                     '    </div>' +
                     '    <div class="wrapper-gift-input">' +
                     '      <span>' +
@@ -152,13 +153,13 @@ $('body')
                     '          <use xlink:href="#icon-link"></use>' +
                     '        </svg>' +
                     '      </span>' +
-                    '      <input type="text" name="gift-url" placeholder="Lien optionnel" value="' + json.gift_url + '">' +
+                    '      <input type="text" name="gift-url" placeholder="' + i18n.t('gift.placeholder.link') + '" value="' + json.gift_url + '">' +
                     '    </div>' +
-                    '    <textarea name="gift-description" id="" rows="3" placeholder="Détail optionnel">' + json.gift_description + '</textarea>' +
+                    '    <textarea name="gift-description" id="" rows="3" placeholder="' + i18n.t('gift.placeholder.description') + '">' + json.gift_description + '</textarea>' +
                     '    <input type="hidden" value="' + json.gift_id + '" name="gift-id">' +
-                    '    <input type="submit" class="bt bt-edit-gift" value="Modifier le cadeau">' +
+                    '    <input type="submit" class="bt bt-edit-gift" value="' + i18n.t('gift.edit.confirm') + '">' +
                     '    <div class="wrapper-bt-edit-gift">' +
-                    '      <span class="cancel-edit-gift bt-cancel">Annuler</span>' +
+                    '      <span class="cancel-edit-gift bt-cancel">' + i18n.t('cancel') + '</span>' +
                     '    </div>' +
                     '  </form>' +
                     '</li>').children(':last').hide().fadeIn(1000);
@@ -178,7 +179,7 @@ $('body')
         // si je sais que mon PHP renverra une erreur
         const giftTitle = $this.find('input[name="gift-name"]').val();
         if (giftTitle === '') {
-            alert('Les champs doivent êtres remplis');
+            alert(i18n.t('empty_form'));
             return;
         }
 
@@ -201,7 +202,7 @@ $('body')
                 $this.parent().find('.gift-link').remove();
                 if (json.gift_url !== '') {
                     $this.parent().find('.wrapper-title').append(
-                        '<a title="Lien vers le cadeau" href="' + json.gift_url + '" class="gift-link">' +
+                        '<a title="' + i18n.t('gift.link') + '" href="' + json.gift_url + '" class="gift-link">' +
                         '  <svg viewBox="0 0 100 100" class="icon">' +
                         '    <use xlink:href="#icon-link"></use>' +
                         '  </svg>' +
@@ -242,8 +243,8 @@ $('body')
                 $this.parent().append(
                     '<form action="' + route_booking_delete + '" id="cancel_resa" method="post">' +
                     '  <input type="hidden" value="' + json.gift_id + '" name="gift-id">' +
-                    '  <input type="submit" value="Annuler" class="bt bt_annuler" ' +
-                    '    title="Tu as indiqué vouloir réserver ce cadeau. Changé d\'avis ?" />' +
+                    '  <input type="submit" value="' + i18n.t('cancel') + '" class="bt bt_annuler" ' +
+                    '    title="' + i18n.t('gift.book.cancel') + '" />' +
                     '</form>');
                 $this.remove();
             }
@@ -270,7 +271,7 @@ $('body')
                 $this.parent().append(
                     '<form action="' + route_booking_create + '" method="post" id="form-resa">' +
                     '  <input type="hidden" value="' + json.gift_id + '" name="gift-id">' +
-                    '  <input type="submit" value="Réserver" class="bt_resa bt">' +
+                    '  <input type="submit" value="' + i18n.t('gift.book.title') +'" class="bt_resa bt">' +
                     '</form>');
                 $this.remove();
             }

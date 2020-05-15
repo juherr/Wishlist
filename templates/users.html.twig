@@ -34,16 +34,16 @@
 
                     <form class="wrapper-bt wrapper-add" action="{{ path('login') }}" method="post">
                         <input type="hidden" value="{{ user.id }}" name="id_personne"/>
-                        <input type="submit" value="Je suis {{ user.name }} !" class="bt"/>
+                        <input type="submit" value="{% trans with {'%name%': user.name} %}i_am{% endtrans %}" class="bt"/>
                     </form>
 
                     <div class="confirmation-suppression">
-                        <p>Êtes-vous sûr ?</p>
+                        <p>{% trans %}delete.confirmation{% endtrans %}</p>
                         <form action="{{ path('user_delete') }}" method="post">
                             <input type="hidden" value="{{ user.id }}" name="user-id"/>
-                            <input type="submit" class="confirm-suppression bt" value="Oui"/>
+                            <input type="submit" class="confirm-suppression bt" value="{% trans %}yes{% endtrans %}"/>
                         </form>
-                        <p class="annuler-suppression">Non, annuler</p>
+                        <p class="annuler-suppression">{% trans %}delete.cancel{% endtrans %}</p>
                     </div>
                 {% endif %}
             </div>
@@ -59,17 +59,17 @@
                                         <use xlink:href="#icon-ico-user"></use>
                                     </svg>
                                 </span>
-                            <input class="input-name" type="text" name="username" placeholder="Prénom" required
+                            <input class="input-name" type="text" name="username" required
+                                   placeholder="{% trans %}user.placeholder.name{% endtrans %}"
                                    value="{{ user.name }}"/>
                         </div>
 
-                        <h3>Choisir l'illustration</h3>
+                        <h3>{% trans %}user.icon{% endtrans %}</h3>
                         <div class="wrapper-illus">
                             <div class="wrapper-illustration">
                                 <input name="choix-illu{{ user.id }}" type="radio"
                                        id="radio1-{{ user.id }}" value="1" class="perso1"
-                                        {{ user.iconId == 1 ? 'checked' }}
-                                />
+                                        {{ user.iconId == 1 ? 'checked' }}/>
                                 <label for="radio1-{{ user.id }}">
                                     <img src="{{ asset('build/perso1.png') }}" alt=""/>
                                 </label>
@@ -79,8 +79,7 @@
                                 <div class="wrapper-illustration">
                                     <input value="{{ i }}" name="choix-illu{{ user.id }}" type="radio"
                                            id="radio{{ i }}-{{ user.id }}"
-                                           class="perso{{ i }}" {{ user.iconId == i ? 'checked' }}
-                                    />
+                                           class="perso{{ i }}" {{ user.iconId == i ? 'checked' }}/>
                                     <label for="radio{{ i }}-{{ user.id }}">
                                         <img src='{{ asset("build/perso#{i}.png") }}' alt=""/>
                                     </label>
@@ -89,17 +88,16 @@
                         </div>
 
                         <div class="wrapper-bt wrapper-add">
-                            <input type="submit" value="Modifier la personne" class="bt"/>
+                            <input type="submit" value="{% trans %}user.edit.confirm{% endtrans %}" class="bt"/>
                         </div>
 
                         <div class="wrapper-bt">
-                            <span class="cancel-add-user bt-cancel">Annuler</span>
+                            <span class="cancel-add-user bt-cancel">{% trans %}cancel{% endtrans %}</span>
                         </div>
                     </form>
                 </div>
             {% endif %}
-            {% block extra %}
-            {% endblock %}
+            {% block extra %}{% endblock %}
         </div>
     {% endfor %}
 
@@ -110,17 +108,18 @@
                     <img src="{{ asset('build/perso1.png') }}" alt=""/>
                 </div>
 
-                <h2>Ajouter une personne</h2>
+                <h2>{% trans %}user.add.title{% endtrans %}</h2>
                 <div class="wrapper-gift-input">
                     <span>
                         <svg viewBox="0 0 100 100" class="icon">
                             <use xlink:href="#icon-ico-user"></use>
                         </svg>
                     </span>
-                    <input class="input-name" type="text" name="username" placeholder="Prénom" required/>
+                    <input class="input-name" type="text" name="username" required
+                           placeholder="{% trans %}user.placeholder.name{% endtrans %}"/>
                 </div>
 
-                <h3>Choisir l'illustration</h3>
+                <h3>{% trans %}user.icon{% endtrans %}</h3>
                 <div class="wrapper-illus">
                     <div class="wrapper-illustration">
                         <input name="choix-illu" type="radio" id="radio1" checked value="1" class="perso1"/>
@@ -137,11 +136,11 @@
                 </div>
 
                 <div class="wrapper-bt wrapper-add">
-                    <input type="submit" value="Ajouter le nouvel utilisateur" class="bt"/>
+                    <input type="submit" value="{% trans %}user.add.action{% endtrans %}" class="bt"/>
                 </div>
 
                 <div class="wrapper-bt">
-                    <span class="cancel-add-user bt-cancel">Annuler</span>
+                    <span class="cancel-add-user bt-cancel">{% trans %}cancel{% endtrans %}</span>
                 </div>
             </form>
         </div>
@@ -151,7 +150,7 @@
 {% block post_content %}
     {% if loggedUser.id is not defined %}
         <div class="add-user">
-            <button class="bt">Ajouter une personne</button>
+            <button class="bt">{% trans %}user.add.title{% endtrans %}</button>
         </div>
     {% endif %}
 {% endblock %}

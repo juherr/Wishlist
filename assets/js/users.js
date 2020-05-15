@@ -4,6 +4,7 @@ import '../sass/styles.scss';
 import {msnry} from './commons';
 import $ from 'jquery';
 import 'jquery.scrollto';
+import i18n from './utils/i18n';
 
 $('body')
 
@@ -47,7 +48,7 @@ $('body')
         // si je sais que mon PHP renverra une erreur
         const username = $this.find('input[name="username"]').val();
         if (username === '') {
-            alert('Les champs doivent êtres remplis');
+            alert(i18n.t('empty_form'));
             return;
         }
         // Envoi de la requête HTTP en mode asynchrone
@@ -114,11 +115,11 @@ $('.modal-add-user .input-name').on('keyup', function () {
 
     const personName = $this.val();
     if (personName === '') {
-        title.html('Ajouter une personne');
-        submitButton.attr('value', 'Ajouter la personne');
+        title.html(i18n.t('user.add.title'));
+        submitButton.attr('value', i18n.t('user.add.action'));
     } else {
         title.html(personName);
-        submitButton.attr('value', 'Ajouter ' + personName);
+        submitButton.attr('value', i18n.t('user.add.action2', { name: personName }));
     }
 });
 
@@ -138,9 +139,9 @@ $('.edit-user .input-name').on('keyup', function () {
     const submitButton = $this.parent().parent().find('input[type="submit"]');
     const personName = $this.val();
     if (personName === '') {
-        submitButton.attr('value', 'Modifier la personne');
+        submitButton.attr('value', i18n.t('user.edit.confirm'));
     } else {
-        submitButton.attr('value', 'Modifier ' + personName);
+        submitButton.attr('value', i18n.t('user.edit.confirm2'));
     }
 });
 

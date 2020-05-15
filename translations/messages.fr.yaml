@@ -1,0 +1,40 @@
+yes: Oui
+cancel: Annuler
+title: Wishlist de Noël
+logout: Se déconnecter
+i_am: 'Je suis %name% !'
+empty_form: Les champs doivent êtres remplis
+delete:
+  confirmation: Êtes-vous sûr ?
+  cancel: Non, annuler
+user:
+  not_connected: Non connecté
+  invalid: Utilisateur incorrect
+  not_found: Utilisateur introuvable
+  placeholder:
+    name: Prénom
+  icon: Choisir l'illustration
+  edit:
+    confirm: Modifier la personne
+    confirm2: 'Modifier %name%'
+  add:
+    title: Ajouter une personne
+    action: Ajouter la personne
+    action2: 'Ajouter %name%'
+gift:
+  not_found: Cadeau introuvable
+  placeholder:
+    title: Désignation
+    link: Lien optionnel
+    description: Détail optionnel
+  link: Lien vers le cadeau
+  edit:
+    title: Éditer le cadeau
+    confirm: Modifier le cadeau
+  book:
+    title: Réserver
+    cancel: Tu as indiqué vouloir réserver ce cadeau. Changé d'avis ?
+    by: '%name% a réservé ce cadeau'
+  add:
+    title: Ajouter un cadeau
+    action: Ajouter le cadeau

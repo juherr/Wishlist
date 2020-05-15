@@ -1,0 +1,6 @@
+user:
+  not_connected: Not connected
+  invalid: Invalid user
+  not_found: User not found
+gift:
+  not_found: Gift not found

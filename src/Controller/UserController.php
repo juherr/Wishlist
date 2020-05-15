@@ -11,16 +11,23 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserController extends BaseController
 {
     private UserRepository $repository;
     private ValidatorInterface $validator;
+    private TranslatorInterface $translator;
 
-    public function __construct(UserRepository $repository, ValidatorInterface $validator)
+    public function __construct(
+        UserRepository $repository,
+        ValidatorInterface $validator,
+        TranslatorInterface $translator
+    )
     {
         $this->repository = $repository;
         $this->validator = $validator;
+        $this->translator = $translator;
     }
 
     /**
@@ -32,6 +39,7 @@ class UserController extends BaseController
         $iconId = $request->request->getInt('choix-illu');
         $user = new User($username, $iconId);
 
+        // TODO replace by validator
         if (empty($username)) {
             return Response::create('Invalid username', 400);
         }
@@ -52,7 +60,7 @@ class UserController extends BaseController
         $userId = $request->request->getInt('id_personne');
         $user = $this->repository->findById($userId);
         if ($user === null) {
-            return $this->failed('User not found', 404);
+            return $this->failed($this->translator->trans('user.not_found'), 404);
         }
 
         $username = $request->request->get('username');
@@ -60,6 +68,7 @@ class UserController extends BaseController
         $iconId = $request->request->getInt('choix-illu' . $userId);
         $user->setIconId((int)$iconId);
 
+        // TODO replace by validator
         if (empty($username)) {
             return $this->failed( 'Invalid username', 400);
         }
@@ -83,7 +92,7 @@ class UserController extends BaseController
         $userId = $request->request->getInt('user-id');
         $user = $this->repository->findById($userId);
         if ($user === null) {
-            return $this->failed('User not found', 404);
+            return $this->failed($this->translator->trans('user.not_found'), 404);
         }
 
         $this->repository->delete($user);

@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Wishlist de Noël</title>
-    {% block stylesheets %}
-    {% endblock %}
+    <title>{% trans %}title{% endtrans %}</title>
+    {% block stylesheets %}{% endblock %}
     <link href='https://fonts.googleapis.com/css?family=Lato:400,900,700' rel='stylesheet' type='text/css'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -23,18 +22,15 @@
     <div class="content">
         <div class="grid-sizer"></div>
 
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
     </div>
 
-    {% block post_content %}
-    {% endblock %}
+    {% block post_content %}{% endblock %}
 </div>
 
-<footer><div class="logout"><a href="{{ path('logout') }}">Se déconnecter</a></div></footer>
+<footer><div class="logout"><a href="{{ path('logout') }}">{% trans %}logout{% endtrans %}</a></div></footer>
 
-{% block javascripts %}
-{% endblock %}
+{% block javascripts %}{% endblock %}
 
 </body>
 </html>

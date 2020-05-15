@@ -11,22 +11,26 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class GiftController extends BaseController
 {
     private GiftRepository $repository;
     private UserRepository $userRepository;
     private ValidatorInterface $validator;
+    private TranslatorInterface $translator;
 
     public function __construct(
         GiftRepository $repository,
         UserRepository $userRepository,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        TranslatorInterface $translator
     )
     {
         $this->repository = $repository;
         $this->userRepository = $userRepository;
         $this->validator = $validator;
+        $this->translator = $translator;
     }
 
     /**
@@ -37,14 +41,14 @@ class GiftController extends BaseController
         /** @var int|null $currentUserId */
         $currentUserId = $request->getSession()->get('user');
         if ($currentUserId === null) {
-            return $this->failed('Not connected', 403);
+            return $this->failed($this->translator->trans('user.not_connected'), 403);
         }
         $title = $request->request->get('gift-name');
         $url = $request->request->get('gift-url');
         $description = $request->request->get('gift-description');
         $userId = $request->request->getInt('gift-user');
         if ($userId !== $currentUserId) {
-            return $this->failed('Invalid user', 401);
+            return $this->failed($this->translator->trans('user.invalid'), 401);
         }
         $currentUser = $this->userRepository->findById($userId);
         $gift = new Gift(
@@ -76,7 +80,7 @@ class GiftController extends BaseController
         $giftId = $request->request->getInt('gift-id');
         $gift = $this->repository->findById($giftId);
         if ($gift === null) {
-            return $this->failed('Gift not found', 404);
+            return $this->failed($this->translator->trans('gift.not_found'), 404);
         }
 
         $this->repository->delete($gift);
@@ -93,7 +97,7 @@ class GiftController extends BaseController
 
         $gift = $this->repository->findById($giftId);
         if ($gift === null) {
-            return $this->failed('Gift not found', 404);
+            return $this->failed($this->translator->trans('gift.not_found'), 404);
         }
 
         $giftTitle = $request->request->get('gift-name');
@@ -108,6 +112,7 @@ class GiftController extends BaseController
             return $this->failed((string) $errors, 400);
         }
 
+        // TODO replace by validator
         if (empty($giftTitle)) {
             return $this->failed('Invalid gift-name', 400);
         }
