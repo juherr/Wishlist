@@ -1,59 +1,52 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Wishlist de Noël</title>
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('gifts') }}
-        {% endblock %}
-        <link href='https://fonts.googleapis.com/css?family=Lato:400,900,700' rel='stylesheet' type='text/css'>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div class="svg-wrapper" aria-hidden="true">
-            {{ source('@public_path'~asset('build/svgs.svg')) }}
-        </div>
+{% extends "base.html.twig" %}
 
-        <div id="snow"></div>
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('gifts') }}
+{% endblock %}
 
-        <div class="wrapper">
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('gifts') }}
+    <script>
+        const route_booking_delete = "{{ path('booking_delete')|escape('js') }}";
+        const route_booking_create = "{{ path('booking_create')|escape('js') }}";
+        const route_gift_delete = "{{ path('gift_delete')|escape('js') }}";
+        const route_gift_update = "{{ path('gift_update')|escape('js') }}";
+    </script>
+{% endblock %}
 
-            <header class="logo">
-                {{ source('@svg_path/logo.svg') }}
-            </header>
+{% block content %}
+    {{ parent() }}
+    {% for user in users %}
+        <div class="user" id="user{{ user.id }}">
+            <div class="illu">
+                <img src='{{ asset("build/perso#{user.iconId}.png") }}'>
+            </div>
 
-            <div class="content">
-                <div class="grid-sizer"></div>
+            <div class="wrapper-username">
+                <h2>{{ user.name }}</h2>
+            </div>
 
-                {% for user in users %}
-                <div class="user" id="user{{ user.id }}">
-                    <div class="illu">
-                        <img src='{{ asset("build/perso#{user.iconId}.png") }}'>
-                    </div>
+            <ul class="gift-list">
+                {% for gift in user.gifts %}
 
-                    <div class="wrapper-username">
-                        <h2>{{ user.name }}</h2>
-                    </div>
+                    {# Si le cadeau est réservé et qu'on est pas sur notre propre liste, on le marque différemment #}
+                    <li {{ gift.booked and user.id != loggedUser.id ? 'class="reserve"' }}>
+                        <div class="wrapper-title">
 
-                    <ul class="gift-list">
-                        {% for gift in user.gifts %}
+                            <p class="gift-title">{{ gift.title }}</p>
 
-                        {# Si le cadeau est réservé et qu'on est pas sur notre propre liste, on le marque différemment #}
-                        <li {{ gift.booked and user.id != loggedUser.id ? 'class="reserve"' }}>
-                            <div class="wrapper-title">
-
-                                <p class="gift-title">{{ gift.title }}</p>
-
-                                {% if gift.link|length > 0 %}
+                            {% if gift.link|length > 0 %}
                                 <a title="Lien vers le cadeau" href="{{ gift.link }}" class="gift-link">
                                     <svg viewBox="0 0 100 100" class="icon">
                                         <use xlink:href="#icon-link"></use>
                                     </svg>
                                 </a>
-                                {% endif %}
+                            {% endif %}
 
-                                {# Chaque personne identifié peut modifier sa propre liste #}
-                                {% if user.id == loggedUser.id %}
+                            {# Chaque personne identifié peut modifier sa propre liste #}
+                            {% if user.id == loggedUser.id %}
                                 <span class="submit-delete ico-trash">
                                     <svg viewBox="0 0 100 100" class="icon">
                                         <use xlink:href="#icon-ico-trash"></use>
@@ -64,7 +57,7 @@
                                     <p>Êtes-vous sûr ?</p>
                                     <form action="{{ path('gift_delete') }}" method="post">
                                         <input type="hidden" value="{{ gift.id }}" name="gift-id">
-                                        <input type="submit" class="confirm-suppression bt" value="Oui" />
+                                        <input type="submit" class="confirm-suppression bt" value="Oui"/>
                                     </form>
                                     <p class="annuler-suppression">Non, annuler</p>
                                 </div>
@@ -76,39 +69,40 @@
                                 </span>
 
                                 {# Si on est pas le propriétaire de la liste, on gère la réservation #}
-                                {% else %}
-                                    {# On récupère l'état de réservation, la personne qui l'a éventuellement réservé #}
-                                    {# Si le cadeau n'est pas réservé, j'affiche le bouton "réserver" #}
-                                    {% if not gift.booked %}
+                            {% else %}
+                                {# On récupère l'état de réservation, la personne qui l'a éventuellement réservé #}
+                                {# Si le cadeau n'est pas réservé, j'affiche le bouton "réserver" #}
+                                {% if not gift.booked %}
                                     <form action="{{ path('booking_create') }}" method="post" id="form-resa">
                                         <input type="hidden" value="{{ gift.id }}" name="gift-id">
                                         <input type="submit" value="Réserver" class="bt_resa bt">
                                     </form>
                                     {# Si le cadeau est réservé #}
-                                    {% else %}
-                                        {# Si il est réservé par moi, je peux annuler #}
-                                        {% if gift.bookedBy.id == loggedUser.id %}
+                                {% else %}
+                                    {# Si il est réservé par moi, je peux annuler #}
+                                    {% if gift.bookedBy.id == loggedUser.id %}
                                         <form action="{{ path('booking_delete') }}" method="post" id="cancel_resa">
                                             <input type="hidden" value="{{ gift.id }}" name="gift-id">
-                                            <input type="submit" value="Annuler" class="bt bt_annuler" title="Tu as indiqué vouloir réserver ce cadeau. Changé d'avis ?">
+                                            <input type="submit" value="Annuler" class="bt bt_annuler"
+                                                   title="Tu as indiqué vouloir réserver ce cadeau. Changé d'avis ?">
                                         </form>
                                         {# Si il est réservé par qqun d'autre, j'affiche ce qqun d'autre #}
-                                        {% else %}
+                                    {% else %}
                                         <div class="resaPar" title="{{ gift.bookedBy.name }} a réservé ce cadeau">
                                             <img src='{{ asset("build/perso#{gift.bookedBy.iconId}.png") }}'>
                                             <span>{{ gift.bookedBy.name }}</span>
                                         </div>
-                                        {% endif %}
                                     {% endif %}
                                 {% endif %}
-                            </div>
-
-                            {% if gift.description|length > 0 %}
-                            <p class="gift-description">{{ gift.description }}</p>
                             {% endif %}
+                        </div>
 
-                            {# Chaque personne identifié peut modifier sa propre liste #}
-                            {% if gift.user.id == loggedUser.id %}
+                        {% if gift.description|length > 0 %}
+                            <p class="gift-description">{{ gift.description }}</p>
+                        {% endif %}
+
+                        {# Chaque personne identifié peut modifier sa propre liste #}
+                        {% if gift.user.id == loggedUser.id %}
                             {# Le formulaire, pour edition #}
                             <form class="form-gift form-edit" action="{{ path('gift_update') }}" method="post">
                                 <div class="wrapper-gift-input">
@@ -117,7 +111,8 @@
                                             <use xlink:href="#icon-ico-item"></use>
                                         </svg>
                                     </span>
-                                    <input type="text" name="gift-name" required placeholder="Désignation" value="{{ gift.title }}">
+                                    <input type="text" name="gift-name" required placeholder="Désignation"
+                                           value="{{ gift.title }}">
                                 </div>
 
                                 <div class="wrapper-gift-input">
@@ -126,10 +121,12 @@
                                             <use xlink:href="#icon-link"></use>
                                         </svg>
                                     </span>
-                                    <input type="text" name="gift-url" placeholder="Lien optionnel" value="{{ gift.link }}">
+                                    <input type="text" name="gift-url" placeholder="Lien optionnel"
+                                           value="{{ gift.link }}">
                                 </div>
 
-                                <textarea name="gift-description" id="" rows="3" placeholder="Détail optionnel">{{ gift.description }}</textarea>
+                                <textarea name="gift-description" id="" rows="3"
+                                          placeholder="Détail optionnel">{{ gift.description }}</textarea>
 
                                 <input type="hidden" value="{{ gift.id }}" name="gift-id">
 
@@ -139,56 +136,42 @@
                                     <span class="cancel-edit-gift bt-cancel">Annuler</span>
                                 </div>
                             </form>
-                            {% endif %}
-                        </li>
-                        {% endfor %}
-                    </ul>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
 
-                    <form class="form-gift form-add" action="{{ path('gift_add') }}" method="post" id="add-user">
-                        <div class="wrapper-gift-input">
+            <form class="form-gift form-add" action="{{ path('gift_add') }}" method="post" id="add-user">
+                <div class="wrapper-gift-input">
                                 <span>
                                     <svg viewBox="0 0 100 100" class="icon">
                                         <use xlink:href="#icon-ico-item"></use>
                                     </svg>
                                 </span>
-                            <input type="text" name="gift-name" required placeholder="Désignation">
-                        </div>
-                        <div class="wrapper-gift-input">
+                    <input type="text" name="gift-name" required placeholder="Désignation">
+                </div>
+                <div class="wrapper-gift-input">
                                 <span>
                                     <svg viewBox="0 0 100 100" class="icon">
                                         <use xlink:href="#icon-link"></use>
                                     </svg>
                                 </span>
-                            <input type="text" name="gift-url" placeholder="Lien optionnel">
-                        </div>
-
-                        <textarea name="gift-description" id="" rows="3" placeholder="Détail optionnel"></textarea>
-
-                        <input type="hidden" value="{{ user.id }}" name="gift-user">
-
-                        <input type="submit" class="bt" value="Ajouter le cadeau">
-                    </form>
-
-                    {% if user.id == loggedUser.id %}
-                    <div class="wrapper-bt wrapper-add">
-                        <button class="bt bt-add-gift">Ajouter un cadeau</button>
-                    </div>
-                    {% endif %}
+                    <input type="text" name="gift-url" placeholder="Lien optionnel">
                 </div>
-                {% endfor %}
-            </div>
+
+                <textarea name="gift-description" id="" rows="3" placeholder="Détail optionnel"></textarea>
+
+                <input type="hidden" value="{{ user.id }}" name="gift-user">
+
+                <input type="submit" class="bt" value="Ajouter le cadeau">
+            </form>
+
+            {% if user.id == loggedUser.id %}
+                <div class="wrapper-bt wrapper-add">
+                    <button class="bt bt-add-gift">Ajouter un cadeau</button>
+                </div>
+            {% endif %}
         </div>
+    {% endfor %}
+{% endblock %}
 
-        <footer><div class="logout"><a href="{{ path('logout') }}">Se déconnecter</a></div></footer>
-
-        {% block javascripts %}
-            {{ encore_entry_script_tags('gifts') }}
-        {% endblock %}
-        <script>
-            const route_booking_delete = "{{ path('booking_delete')|escape('js') }}";
-            const route_booking_create = "{{ path('booking_create')|escape('js') }}";
-            const route_gift_delete = "{{ path('gift_delete')|escape('js') }}";
-            const route_gift_update = "{{ path('gift_update')|escape('js') }}";
-        </script>
-    </body>
-</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wishlist de Noël</title>
+    {% block stylesheets %}
+    {% endblock %}
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,900,700' rel='stylesheet' type='text/css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="svg-wrapper" aria-hidden="true">
+    {{ source('@public_path'~asset('build/svgs.svg')) }}
+</div>
+
+<div id="snow"></div>
+
+<div class="wrapper">
+    <header class="logo">
+        {{ source('@svg_path/logo.svg') }}
+    </header>
+
+    <div class="content">
+        <div class="grid-sizer"></div>
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    {% block post_content %}
+    {% endblock %}
+</div>
+
+<footer><div class="logout"><a href="{{ path('logout') }}">Se déconnecter</a></div></footer>
+
+{% block javascripts %}
+{% endblock %}
+
+</body>
+</html>
