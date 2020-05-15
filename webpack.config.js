@@ -1,10 +1,12 @@
-var Encore = require('@symfony/webpack-encore');
+const Encore = require('@symfony/webpack-encore');
+const SvgStore = require('webpack-svgstore-plugin');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
 if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
+
 
 Encore
     // directory where compiled assets will be stored
@@ -23,9 +25,8 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('app', './assets/js/app.js')
-    //.addEntry('page1', './assets/js/page1.js')
-    //.addEntry('page2', './assets/js/page2.js')
+    .addEntry('gifts', './assets/js/gifts.js')
+    .addEntry('users', './assets/js/users.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
@@ -54,7 +55,21 @@ Encore
     })
 
     // enables Sass/SCSS support
-    //.enableSassLoader()
+    .enableSassLoader()
+
+    .enablePostCssLoader()
+
+    .copyFiles([{
+        from: './assets/png',
+        // optional target path, relative to the output dir
+        //to: 'images/[path][name].[ext]',
+
+        // if versioning is enabled, add the file hash too
+        //to: 'images/[path][name].[hash:8].[ext]',
+
+        // only copy files matching this pattern
+        //pattern: /\.(png|jpg|jpeg)$/
+    }])
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
@@ -69,6 +84,22 @@ Encore
     // uncomment if you use API Platform Admin (composer req api-admin)
     //.enableReactPreset()
     //.addEntry('admin', './assets/js/admin.js')
+
+    .addPlugin(new SvgStore({
+        svg: {
+            xmlns: 'http://www.w3.org/2000/svg',
+            viewBox : '0 0 100 100',
+        },
+        // svgo options
+        svgoOptions: {
+            plugins: [
+                { cleanupIDs: false },
+                { removeViewBox: false },
+                { removeUselessStrokeAndFill: false }
+            ]
+        },
+        prefix: 'icon-',
+    }))
 ;
 
 module.exports = Encore.getWebpackConfig();

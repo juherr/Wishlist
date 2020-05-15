@@ -3,13 +3,15 @@
     <head>
         <meta charset="UTF-8">
         <title>Wishlist de Noël</title>
-        <link rel="stylesheet" href="{{ asset('style.css') }}">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('gifts') }}
+        {% endblock %}
         <link href='https://fonts.googleapis.com/css?family=Lato:400,900,700' rel='stylesheet' type='text/css'>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
         <div class="svg-wrapper" aria-hidden="true">
-            {{ source('assets/svgs.svg') }}
+            {{ source('@public_path'~asset('build/svgs.svg')) }}
         </div>
 
         <div id="snow"></div>
@@ -17,7 +19,7 @@
         <div class="wrapper">
 
             <header class="logo">
-                {{ source('assets/logo.svg') }}
+                {{ source('@svg_path/logo.svg') }}
             </header>
 
             <div class="content">
@@ -26,7 +28,7 @@
                 {% for user in users %}
                 <div class="user" id="user{{ user.id }}">
                     <div class="illu">
-                        <img src='{{ asset("img/perso#{user.iconId}.png") }}'>
+                        <img src='{{ asset("build/perso#{user.iconId}.png") }}'>
                     </div>
 
                     <div class="wrapper-username">
@@ -93,7 +95,7 @@
                                         {# Si il est réservé par qqun d'autre, j'affiche ce qqun d'autre #}
                                         {% else %}
                                         <div class="resaPar" title="{{ gift.bookedBy.name }} a réservé ce cadeau">
-                                            <img src='{{ asset("img/perso#{gift.bookedBy.iconId}.png") }}'>
+                                            <img src='{{ asset("build/perso#{gift.bookedBy.iconId}.png") }}'>
                                             <span>{{ gift.bookedBy.name }}</span>
                                         </div>
                                         {% endif %}
@@ -179,11 +181,9 @@
 
         <footer><div class="logout"><a href="{{ path('logout') }}">Se déconnecter</a></div></footer>
 
-        <script src="{{ asset('js/snowstorm-min.js') }}"></script>
-        <script src="{{ asset('js/jquery.min.js') }}"></script>
-        <script src="{{ asset('js/masonry.pkgd.min.js') }}"></script>
-        <script src="{{ asset('js/jquery.scrollTo.min.js') }}"></script>
-        <script src="{{ asset('js/scripts.js') }}"></script>
+        {% block javascripts %}
+            {{ encore_entry_script_tags('gifts') }}
+        {% endblock %}
         <script>
             const route_booking_delete = "{{ path('booking_delete')|escape('js') }}";
             const route_booking_create = "{{ path('booking_create')|escape('js') }}";

@@ -5,30 +5,31 @@
   "author": "locher",
   "license": "",
   "scripts": {
-    "dev": "grunt build",
-    "prod": "grunt build",
-    "watch": "grunt watch",
+    "dev": "yarn encore dev",
+    "prod": "yarn encore production",
+    "watch": "yarn encore dev --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "grunt clean"
   },
   "engine": "node >= 13.0",
   "dependencies": {
+    "core-js": "^3.6.5",
     "jquery": "^3.4.1",
     "jquery.scrollto": "^2.1.2",
-    "masonry-layout": "^3.3.2"
+    "masonry-layout": "^4.2.2"
   },
   "devDependencies": {
-    "grunt": "^1.1",
-    "grunt-autoprefixer": "^3.0",
-    "grunt-contrib-clean": "^2.0.0",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-watch": "^1.1",
-    "grunt-downloadfile": "^2.1.1",
-    "grunt-sass": "^3.1",
-    "grunt-svgmin": "^6.0",
-    "grunt-svgstore": "^2.0",
-    "load-grunt-tasks": "^5.1.0",
-    "node-sass": "^4.14"
-  }
+    "@symfony/webpack-encore": "^0.29.1",
+    "autoprefixer": "^9.7.6",
+    "node-sass": "^4.14.1",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^7.0.1",
+    "webpack-notifier": "^1.6.0",
+    "webpack-svgstore-plugin": "^4.1.0"
+  },
+  "browserslist": [
+    "last 3 versions",
+    "Android >= 2.1",
+    "iOS >= 7"
+  ]
 }

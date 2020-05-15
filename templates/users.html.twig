@@ -3,21 +3,22 @@
     <head>
         <meta charset="UTF-8">
         <title>Wishlist de Noël</title>
-        <link rel="stylesheet" href="{{ asset('style.css') }}">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('users') }}
+        {% endblock %}
         <link href='https://fonts.googleapis.com/css?family=Lato:400,900,700' rel='stylesheet' type='text/css'>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     </head>
     <body>
         <div class="svg-wrapper" aria-hidden="true">
-            {{ source('assets/svgs.svg') }}
+            {{ source('@public_path'~asset('build/svgs.svg')) }}
         </div>
 
         <div id="snow"></div>
 
         <div class="wrapper">
             <header class="logo">
-                {{ source('assets/logo.svg') }}
+                {{ source('@svg_path/logo.svg') }}
             </header>
 
             <div class="content">
@@ -26,7 +27,7 @@
                 {% for user in users %}
                 <div class="user" id="user{{ user.id }}">
                     <div class="illu">
-                        <img src='{{ asset("img/perso#{user.iconId}.png") }}'>
+                        <img src='{{ asset("build/perso#{user.iconId}.png") }}'>
                     </div>
 
                     <div class="wrapper-username">
@@ -78,7 +79,7 @@
                                            id="radio1-{{ user.id }}" value="1" class="perso1"
                                             {{ user.iconId == 1 ? 'checked' }}
                                     >
-                                    <label for="radio1-{{ user.id }}"><img src="{{ asset('img/perso1.png') }}" alt=""></label>
+                                    <label for="radio1-{{ user.id }}"><img src="{{ asset('build/perso1.png') }}" alt=""></label>
                                 </div>
 
                                 {% for i in range(2, 8) %}
@@ -88,7 +89,7 @@
                                            class="perso{{ i }}" {{ user.iconId == i ? 'checked' }}
                                     >
                                     <label for="radio{{ i }}-{{ user.id }}">
-                                        <img src='{{ asset("img/perso#{i}.png") }}' alt="">
+                                        <img src='{{ asset("build/perso#{i}.png") }}' alt="">
                                     </label>
                                 </div>
                                 {% endfor %}
@@ -110,7 +111,7 @@
                     <form action="{{ path('user_add') }}" method="post">
 
                         <div class="illu">
-                            <img src="{{ asset('img/perso1.png') }}" alt="">
+                            <img src="{{ asset('build/perso1.png') }}" alt="">
                         </div>
 
                         <h2>Ajouter une personne</h2>
@@ -128,7 +129,7 @@
                         <div class="wrapper-illus">
                             <div class="wrapper-illustration">
                                 <input name="choix-illu" type="radio" id="radio1" checked value="1" class="perso1">
-                                <label for="radio1"><img src="{{ asset('img/perso1.png') }}" alt=""></label>
+                                <label for="radio1"><img src="{{ asset('build/perso1.png') }}" alt=""></label>
 
                             </div>
 
@@ -136,7 +137,7 @@
                             <div class="wrapper-illustration">
                                 <input value="{{ i }}" name="choix-illu" type="radio" id="radio{{ i }}"
                                        class="perso{{ i }}">
-                                <label for="radio{{ i }}"><img src='{{ asset("img/perso#{i}.png") }}' alt=""></label>
+                                <label for="radio{{ i }}"><img src='{{ asset("build/perso#{i}.png") }}' alt=""></label>
                             </div>
                             {% endfor %}
                         </div>
@@ -157,11 +158,9 @@
             </div>
         </div>
 
-        <script src="{{ asset('js/snowstorm-min.js') }}"></script>
-        <script src="{{ asset('js/jquery.min.js') }}"></script>
-        <script src="{{ asset('js/masonry.pkgd.min.js') }}"></script>
-        <script src="{{ asset('js/jquery.scrollTo.min.js') }}"></script>
-        <script src="{{ asset('js/scripts.js') }}"></script>
+        {% block javascripts %}
+            {{ encore_entry_script_tags('users') }}
+        {% endblock %}
         <script>
             const route_booking_delete = "{{ path('booking_delete')|escape('js') }}";
         </script>

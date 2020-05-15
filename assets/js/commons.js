@@ -1,44 +1,32 @@
 'use strict';
 
-(() => {
-    $(() => {
+import Snowstorm from './lib/snowstorm';
+import Masonry from 'masonry-layout';
 
-        // Neige
-        snowStorm.flakesMaxActive = 80000;
-        snowStorm.animationInterval = 25;
-        snowStorm.followMouse = false;
-        snowStorm.targetElement = "snow";
+const __svg__ = {
+    path: '../svg/sprite/*.svg',
+    name: 'svgs.svg',
+};
 
-        // Masonry
-        window.$grid = $('.content').masonry({
-            itemSelector: '.user',
-            columnWidth: '.grid-sizer',
-            percentPosition: true,
-            gutter: 50
-        });
+require('webpack-svgstore-plugin/src/helpers/svgxhr')(__svg__);
 
-        // === GIFT & USER AJAX ===
-        $('body').on('submit', '.confirmation-suppression form', function (e) {
-            e.preventDefault();
+// Neige
+const snow = new Snowstorm({
+    'flakesMaxActive': 80000,
+    'animationInterval': 25,
+    'followMouse': false,
+    'targetElement': 'snow',
+})
+snow.start();
 
-            const $this = $(this);
-            $.ajax({
-                url: $this.attr('action'),
-                type: $this.attr('method'),
-                data: $this.serialize(),
-                dataType: 'json', // JSON
-                success: json => {
-                    if (json.reponse !== 'success') {
-                        alert('Erreur : ' + json.reponse);
-                        return;
-                    }
+const msnry = new Masonry('.content', {
+    itemSelector: '.user',
+    columnWidth: '.grid-sizer',
+    percentPosition: true,
+    gutter: 50,
+});
 
-                    //ce qui se passe si succès
-                    $this.parent().parent().parent().fadeOut(function () {
-                        $grid.masonry();
-                    })
-                }
-            });
-        });
-    });
-})();
+export {
+    snow,
+    msnry,
+}

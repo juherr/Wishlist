@@ -100,13 +100,13 @@ class UserController extends BaseController
 
         $currentUserId = $request->getSession()->get('user');
         if ($currentUserId === null) {
-            return $this->render('login.html.twig', [
+            return $this->render('users.html.twig', [
                 'users' => $users,
             ]);
         }
         $currentUser = $this->repository->findById($currentUserId);
 
-        return $this->render('index.html.twig', [
+        return $this->render('gifts.html.twig', [
             'users' => $users,
             'loggedUser' => $currentUser,
         ]);

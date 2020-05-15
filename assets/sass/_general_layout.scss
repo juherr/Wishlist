@@ -12,7 +12,6 @@ body{
 	position:relative;
 	background: radial-gradient(circle at center, rgba(#49596d, .7), rgba(#162436, 0) 70%), ;
 	min-height: 100%;
-
 }
 
 .svg-wrapper{
@@ -56,14 +55,14 @@ body{
 footer{
 	width: 100%;
 	height: 250px;
-	background: url('/img/bas-neige.png') no-repeat center top;
+	background: url('/build/bas-neige.png') no-repeat center top;
 	text-align: center;
 	margin-top: 50px;
 	position: absolute;
 	bottom: 0;
 
 	&::after{
-		content:url('/img/cadeaux.png');
+		content: url('/build/cadeaux.png');
 		position: absolute;
 		bottom: 20px;
 		left: calc(50% - 136px);
@@ -177,7 +176,6 @@ footer{
 
 		&:hover svg{
 			fill: $rouge;
-
 		}
 
 		button{
