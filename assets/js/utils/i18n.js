@@ -1,7 +1,11 @@
+'use strict';
+
 import i18n from 'i18next';
 import frYaml from 'js-yaml-loader!./../../../translations/messages.fr.yaml';
 import enYaml from 'js-yaml-loader!./../../../translations/messages.en.yaml';
 
+// From https://medium.com/swlh/how-we-translated-a-symfony-and-react-project-67906b7d5b30
+// TODO should be a webpack plugin
 const splitPlurals = (object) => {
     const newObject = {};
     Object.keys(object).forEach((key) => {

@@ -1,10 +1,8 @@
 'use strict';
 
-import '../sass/styles.scss';
-import {msnry} from './commons';
+import {i18n, msnry} from './commons';
 import $ from 'jquery';
 import 'jquery.scrollto';
-import i18n from './utils/i18n';
 
 $('body')
 

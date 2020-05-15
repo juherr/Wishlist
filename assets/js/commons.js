@@ -1,32 +1,11 @@
 'use strict';
 
-import Snowstorm from './lib/snowstorm';
-import Masonry from 'masonry-layout';
-
-const __svg__ = {
-    path: '../svg/sprite/*.svg',
-    name: 'svgs.svg',
-};
-
-require('webpack-svgstore-plugin/src/helpers/svgxhr')(__svg__);
-
-// Neige
-const snow = new Snowstorm({
-    'flakesMaxActive': 80000,
-    'animationInterval': 25,
-    'followMouse': false,
-    'targetElement': 'snow',
-})
-snow.start();
-
-const msnry = new Masonry('.content', {
-    itemSelector: '.user',
-    columnWidth: '.grid-sizer',
-    percentPosition: true,
-    gutter: 50,
-});
+import '../sass/styles.scss';
+import './utils/snow';
+import './utils/svg';
+import i18n from './utils/i18n';
+import msnry from './utils/msnry';
 
 export {
-    snow,
-    msnry,
-}
+  i18n, msnry,
+};
