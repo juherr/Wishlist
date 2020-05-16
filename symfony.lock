@@ -547,6 +547,12 @@
     "symfony/yaml": {
         "version": "v5.0.7"
     },
+    "symplify/console-color-diff": {
+        "version": "v7.3.16"
+    },
+    "symplify/parameter-name-guard": {
+        "version": "v7.3.17"
+    },
     "symplify/phpstan-extensions": {
         "version": "v7.3.8"
     },
