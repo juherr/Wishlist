@@ -23,7 +23,7 @@
                     <p class="gift-title">{{ gift.title }}</p>
 
                     {% if gift.link|length > 0 %}
-                        <a title="{% trans %}gift.link{% endtrans %}" href="{{ gift.link }}" class="gift-link">
+                        <a title="{{ 'gift.link'|trans }}" href="{{ gift.link }}" class="gift-link">
                             <svg viewBox="0 0 100 100" class="icon">
                                 <use xlink:href="#icon-link"></use>
                             </svg>
@@ -39,15 +39,15 @@
                         </span>
 
                         <div class="confirmation-suppression">
-                            <p>{% trans %}delete.confirmation{% endtrans %}</p>
+                            <p>{{ 'delete.confirmation'|trans }}</p>
                             <form action="{{ path('gift_delete') }}" method="post">
                                 <input type="hidden" value="{{ gift.id }}" name="gift-id"/>
-                                <input type="submit" class="confirm-suppression bt" value="{% trans %}yes{% endtrans %}"/>
+                                <input type="submit" class="confirm-suppression bt" value="{{ 'yes'|trans }}"/>
                             </form>
-                            <p class="annuler-suppression">{% trans %}delete.cancel{% endtrans %}</p>
+                            <p class="annuler-suppression">{{ 'delete.cancel'|trans }}</p>
                         </div>
 
-                        <span class="ico-edit" title="{% trans %}gift.edit.title{% endtrans %}">
+                        <span class="ico-edit" title="{{ 'gift.edit.title'|trans }}">
                             <svg viewBox="0 0 100 100" class="icon">
                                 <use xlink:href="#icon-ico-edit"></use>
                             </svg>
@@ -60,7 +60,7 @@
                         {% if not gift.booked %}
                             <form action="{{ path('booking_create') }}" method="post" id="form-resa">
                                 <input type="hidden" value="{{ gift.id }}" name="gift-id"/>
-                                <input type="submit" value="{% trans %}gift.book.title{% endtrans %}" class="bt_resa bt"/>
+                                <input type="submit" value="{{ 'gift.book.title'|trans }}" class="bt_resa bt"/>
                             </form>
                             {# Si le cadeau est réservé #}
                         {% else %}
@@ -68,12 +68,12 @@
                             {% if gift.bookedBy.id == loggedUser.id %}
                                 <form action="{{ path('booking_delete') }}" method="post" id="cancel_resa">
                                     <input type="hidden" value="{{ gift.id }}" name="gift-id"/>
-                                    <input type="submit" value="{% trans %}cancel{% endtrans %}" class="bt bt_annuler"
-                                           title="{% trans %}gift.book.cancel{% endtrans %}"/>
+                                    <input type="submit" value="{{ 'cancel'|trans }}" class="bt bt_annuler"
+                                           title="{{ 'gift.book.cancel'|trans }}"/>
                                 </form>
                                 {# Si il est réservé par qqun d'autre, j'affiche ce qqun d'autre #}
                             {% else %}
-                                <div class="resaPar" title="{% trans with {'%name%': gift.bookedBy.name} %}gift.book.by{% endtrans %}">
+                                <div class="resaPar" title="{{ 'gift.book.by'|trans({ '%name%': gift.bookedBy.name }) }}">
                                     <img src='{{ asset("build/perso#{gift.bookedBy.iconId}.png") }}'/>
                                     <span>{{ gift.bookedBy.name }}</span>
                                 </div>
@@ -97,7 +97,7 @@
                                 </svg>
                             </span>
                             <input type="text" name="gift-name" required
-                                   placeholder="{% trans %}gift.placeholder.title{% endtrans %}"
+                                   placeholder="{{ 'gift.placeholder.title'|trans }}"
                                    value="{{ gift.title }}"/>
                         </div>
 
@@ -108,19 +108,19 @@
                                 </svg>
                             </span>
                             <input type="text" name="gift-url"
-                                   placeholder="{% trans %}gift.placeholder.link{% endtrans %}"
+                                   placeholder="{{ 'gift.placeholder.link'|trans }}"
                                    value="{{ gift.link }}"/>
                         </div>
 
                         <textarea name="gift-description" id="" rows="3"
-                                  placeholder="{% trans %}gift.placeholder.description{% endtrans %}"
+                                  placeholder="{{ 'gift.placeholder.description'|trans }}"
                         >{{ gift.description }}</textarea>
 
                         <input type="hidden" value="{{ gift.id }}" name="gift-id"/>
-                        <input type="submit" class="bt bt-edit-gift" value="{% trans %}gift.edit.confirm{% endtrans %}"/>
+                        <input type="submit" class="bt bt-edit-gift" value="{{ 'gift.edit.confirm'|trans }}"/>
 
                         <div class="wrapper-bt-edit-gift">
-                            <span class="cancel-edit-gift bt-cancel">{% trans %}cancel{% endtrans %}</span>
+                            <span class="cancel-edit-gift bt-cancel">{{ 'cancel'|trans }}</span>
                         </div>
                     </form>
                 {% endif %}
@@ -135,7 +135,7 @@
                     <use xlink:href="#icon-ico-item"></use>
                 </svg>
             </span>
-            <input type="text" name="gift-name" required placeholder="{% trans %}gift.placeholder.title{% endtrans %}"/>
+            <input type="text" name="gift-name" required placeholder="{{ 'gift.placeholder.title'|trans }}"/>
         </div>
         <div class="wrapper-gift-input">
             <span>
@@ -143,19 +143,19 @@
                     <use xlink:href="#icon-link"></use>
                 </svg>
             </span>
-            <input type="text" name="gift-url" placeholder="{% trans %}gift.placeholder.link{% endtrans %}"/>
+            <input type="text" name="gift-url" placeholder="{{ 'gift.placeholder.link'|trans }}"/>
         </div>
 
         <textarea name="gift-description" id="" rows="3"
-                  placeholder="{% trans %}gift.placeholder.description{% endtrans %}"></textarea>
+                  placeholder="{{ 'gift.placeholder.description'|trans }}"></textarea>
 
         <input type="hidden" value="{{ user.id }}" name="gift-user"/>
-        <input type="submit" class="bt" value="{% trans %}gift.add.action{% endtrans %}"/>
+        <input type="submit" class="bt" value="{{ 'gift.add.action'|trans }}"/>
     </form>
 
     {% if user.id == loggedUser.id %}
         <div class="wrapper-bt wrapper-add">
-            <button class="bt bt-add-gift">{% trans %}gift.add.title{% endtrans %}</button>
+            <button class="bt bt-add-gift">{{ 'gift.add.title'|trans }}</button>
         </div>
     {% endif %}
 {% endblock %}

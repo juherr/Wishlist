@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ app.request.locale }}">
 <head>
     <meta charset="UTF-8">
-    <title>{% trans %}title{% endtrans %}</title>
+    <title>{{ 'title'|trans }}</title>
     {% block stylesheets %}{% endblock %}
     <link href='https://fonts.googleapis.com/css?family=Lato:400,900,700' rel='stylesheet' type='text/css'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,7 +28,7 @@
     {% block post_content %}{% endblock %}
 </div>
 
-<footer><div class="logout"><a href="{{ path('logout') }}">{% trans %}logout{% endtrans %}</a></div></footer>
+<footer><div class="logout"><a href="{{ path('logout') }}">{{ 'logout'|trans }}</a></div></footer>
 
 {% block javascripts %}{% endblock %}
 
